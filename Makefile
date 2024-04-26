@@ -1,8 +1,8 @@
 CC = cc
 
-CFLAGS = -g -Wall -Wextra -Werror 
+CFLAGS = -g #-Wall -Wextra -Werror 
 
-SRC = 
+SRC = src/main.c src/utils.c
 		
 OBJ = $(SRC:%.c=%.o)
 
