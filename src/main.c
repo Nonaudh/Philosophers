@@ -47,8 +47,8 @@ void	init_philo(t_data *d)
 	{
 		copy_data(d, &d->philo[i]);
 		d->philo[i].number = i + 1;
-		d->philo[i].left_fork = &d->forks[i];
-		d->philo[i].right_fork = &d->forks[(i + 1) % d->number_of_philo];
+		d->philo[i].right_fork = &d->forks[i];
+		d->philo[i].left_fork = &d->forks[(i + 1) % d->number_of_philo];
 		//pthread_create(&d->philo[i].philo_thread, NULL, routine, &d->philo[i]);
 		//usleep(50);
 		i++;
