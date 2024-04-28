@@ -1,9 +1,9 @@
 CC = cc
 
-CFLAGS = -g #-Wall -Wextra -Werror 
+CFLAGS = -g -pthread #-Wall -Wextra -Werror 
 
-SRC = src/main.c src/utils.c
-		
+SRC = src/main.c src/utils.c src/philo.c
+
 OBJ = $(SRC:%.c=%.o)
 
 NAME = philo
@@ -18,6 +18,7 @@ all : $(NAME)
 
 clean :
 	rm -f $(OBJ) $(OBJ_BONUS)
+
 
 fclean : clean
 	rm -f $(NAME)
