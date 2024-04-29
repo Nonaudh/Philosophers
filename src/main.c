@@ -10,12 +10,12 @@ void	init_data(t_data *d, char **argv)
 	d->time_to_eat = check(ft_atol(argv[3]));
 	d->time_to_sleep = check(ft_atol(argv[4]));
 	d->philo = malloc(sizeof(t_philo) * d->number_of_philo);
-	d->forks = malloc(sizeof(pthread_mutex_t) * d->number_of_philo);
-	while (i < d->number_of_philo)
-	{
-		pthread_mutex_init(&d->forks[i], NULL);
-		i++;
-	}
+	// d->forks = malloc(sizeof(pthread_mutex_t) * d->number_of_philo);
+	// while (i < d->number_of_philo)
+	// {
+	// 	pthread_mutex_init(&d->forks[i], NULL);
+	// 	i++;
+	// }
 }
 
 void	init_monitoring(t_data *d, t_monitoring *m)
@@ -47,10 +47,17 @@ void	init_philo(t_data *d)
 	{
 		copy_data(d, &d->philo[i]);
 		d->philo[i].number = i + 1;
-		d->philo[i].right_fork = &d->forks[i];
-		d->philo[i].left_fork = &d->forks[(i + 1) % d->number_of_philo];
+		//d->philo[i].right_fork = &d->forks[i];
+		pthread_mutex_init(&d->philo[i].right_fork, NULL);
+		//d->philo[i].left_fork = &d->forks[(i + 1) % d->number_of_philo];
 		//pthread_create(&d->philo[i].philo_thread, NULL, routine, &d->philo[i]);
 		//usleep(50);
+		i++;
+	}
+	i = 0;
+	while (i < d->number_of_philo)
+	{
+		d->philo[i].left_fork = &d->philo[(i + 1) % d->number_of_philo].right_fork;
 		i++;
 	}
 	i = 0;

@@ -2,16 +2,16 @@
 
 void	eating(t_philo *p)
 {
-	pthread_mutex_lock(p->right_fork);
+	pthread_mutex_lock(&p->right_fork);
 	printf("%d right fork\n", p->number);
 	pthread_mutex_lock(p->left_fork);
 	printf("%d left fork\n", p->number);
 	printf("%d eating\n", p->number);
 	usleep(p->time_to_eat);
+	pthread_mutex_unlock(&p->right_fork);
+	printf("%d right drop\n", p->number);
 	pthread_mutex_unlock(p->left_fork);
 	printf("%d left drop\n", p->number);
-	pthread_mutex_unlock(p->right_fork);
-	printf("%d right drop\n", p->number);
 }
 void	sleeping(t_philo *p)
 {
