@@ -51,7 +51,7 @@ void	*routine(void *p)
 	t_philo *tmp = p;
 	int i = 0;
 
-	while (i < 5)
+	while (i < 2)
 	{
 		eating(tmp);
 		sleeping(tmp);
@@ -73,7 +73,7 @@ void	philo(t_philo *p, pthread_t *t, int number)
 
 int	main(int argc, char **argv)
 {
-	int	number = 4;
+	int	number = 2;
 	pthread_t *t = malloc(sizeof(pthread_t) * number);
 	t_philo *p = malloc(sizeof(t_philo) * number);
 
