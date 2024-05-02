@@ -81,5 +81,7 @@ int	main(int argc, char **argv)
 	philo(p, t, number);
 	wait_for_all_threads(t, number);
 	destroy_all_mutex(p, number);
+	free(t);
+	free(p);
 	return (0);
 }
