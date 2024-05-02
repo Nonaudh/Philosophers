@@ -1,35 +1,24 @@
 #include "../inc/philo.h"
 
-long	ft_atol(const char *nptr)
+void	wait_for_all_threads(pthread_t *t, int number)
 {
-	int		i;
-	long	x;
-	long	y;
+	int	i;
 
 	i = 0;
-	x = 1;
-	y = 0;
-	while (nptr[i] == ' ' || (nptr[i] > 8 && nptr[i] < 14))
-		i++;
-	if (nptr[i] == '+' || nptr[i] == '-')
+	while (i < number)
 	{
-		if (nptr[i] == '-')
-			x = -x;
+		pthread_join(t[i], NULL);
 		i++;
 	}
-	while (nptr[i] >= '0' && nptr[i] <= '9')
-	{
-		y = (y * 10) + nptr[i] - '0';
-		i++;
-	}
-	return (y * x);
 }
-
-int	check(long nb)
+void	destroy_all_mutex(t_philo *p, int number)
 {
-	if(nb > 2147483647)
-		return (-1);
-	if (nb < 0)
-		return (-2);
-	return (nb);
+	int	i;
+
+	i = 0;
+	while (i < number)
+	{
+		pthread_mutex_destroy(&p[i].right_fork);
+		i++;
+	}
 }

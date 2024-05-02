@@ -15,38 +15,15 @@ typedef enum	e_bool
 
 typedef struct s_philo
 {
-	pthread_t philo_thread;
+	int id;
 	int	number;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int last_meal;
-	t_bool is_eating;
-	t_bool	stop;
 	pthread_mutex_t right_fork;
 	pthread_mutex_t *left_fork;
 }	t_philo;
 
-typedef struct s_monitoring
-{
-	t_bool one_dead;
-	int number_of_philo;
-	t_philo *philo;
-}	t_monitoring;
+void	init_philo(t_philo *p, int number);
 
-typedef struct s_data
-{
-	int number_of_philo;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	t_philo *philo;
-	pthread_mutex_t *forks;
-}	t_data;
-
-long	ft_atol(const char *nptr);
-int		check(long nb);
-
-void	*routine(void *p);
+void	wait_for_all_threads(pthread_t *t, int number);
+void	destroy_all_mutex(t_philo *p, int number);
 
 #endif

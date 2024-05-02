@@ -2,7 +2,7 @@ CC = cc
 
 CFLAGS = -g -pthread #-Wall -Wextra -Werror 
 
-SRC = src/main.c src/utils.c src/philo.c
+SRC = src/main.c  src/philo.c src/utils.c
 
 OBJ = $(SRC:%.c=%.o)
 
@@ -18,7 +18,6 @@ all : $(NAME)
 
 clean :
 	rm -f $(OBJ) $(OBJ_BONUS)
-
 
 fclean : clean
 	rm -f $(NAME)

@@ -1,93 +1,85 @@
 #include "../inc/philo.h"
-
-void	init_data(t_data *d, char **argv)
+void	right_first(t_philo *p)
 {
-	int	i;
-
-	i = 0;
-	d->number_of_philo = check(ft_atol(argv[1]));
-	d->time_to_die = check(ft_atol(argv[2]));
-	d->time_to_eat = check(ft_atol(argv[3]));
-	d->time_to_sleep = check(ft_atol(argv[4]));
-	d->philo = malloc(sizeof(t_philo) * d->number_of_philo);
-	// d->forks = malloc(sizeof(pthread_mutex_t) * d->number_of_philo);
-	// while (i < d->number_of_philo)
-	// {
-	// 	pthread_mutex_init(&d->forks[i], NULL);
-	// 	i++;
-	// }
+	pthread_mutex_lock(&p->right_fork);
+	printf("%d lock_right\n", p->id);
+	pthread_mutex_lock(p->left_fork);
+	printf("%d lock_left\n", p->id);
+	printf("%d eat\n", p->id);
+	usleep(500);
+	pthread_mutex_unlock(&p->right_fork);
+	printf("%d unlock_right\n", p->id);
+	pthread_mutex_unlock(p->left_fork);
+	printf("%d unlock_left\n", p->id);
 }
-
-void	init_monitoring(t_data *d, t_monitoring *m)
+void	left_first(t_philo *p)
 {
-	m->one_dead = false;
-	m->number_of_philo = d->number_of_philo;
-	m->philo = d->philo;
-}
-
-void	copy_data(t_data *d, t_philo *p)
-{
-	p->time_to_die = d->time_to_die;
-	p->time_to_eat = d->time_to_eat;
-	p->time_to_sleep = d->time_to_sleep;
-	p->is_eating = false;
-	p->last_meal = 0;
-	p->stop = false;
+	pthread_mutex_lock(p->left_fork);
+	printf("%d lock_left\n", p->id);
+	pthread_mutex_lock(&p->right_fork);
+	printf("%d lock_right\n", p->id);
+	printf("%d eat\n", p->id);
+	usleep(500);
+	pthread_mutex_unlock(p->left_fork);
+	printf("%d unlock_left\n", p->id);
+	pthread_mutex_unlock(&p->right_fork);
+	printf("%d unlock_right\n", p->id);
 }
 
 
-void	init_philo(t_data *d)
+void	eating(t_philo *p)
 {
-	int	i;
-	t_monitoring monitoring;
+	if (p->id % 2 == 0)
+		right_first(p);
+	else
+		left_first(p);
+}
 
-	i = 0;
-	init_monitoring(d, &monitoring);
-	while (i < d->number_of_philo)
+void	sleeping(t_philo *p)
+{
+	printf("%d sleep\n", p->id);
+	usleep(200);
+}
+
+void	thinking(t_philo *p)
+{
+	printf("%d think\n", p->id);
+}
+
+void	*routine(void *p)
+{
+	t_philo *tmp = p;
+	int i = 0;
+
+	while (i < 5)
 	{
-		copy_data(d, &d->philo[i]);
-		d->philo[i].number = i + 1;
-		//d->philo[i].right_fork = &d->forks[i];
-		pthread_mutex_init(&d->philo[i].right_fork, NULL);
-		//d->philo[i].left_fork = &d->forks[(i + 1) % d->number_of_philo];
-		//pthread_create(&d->philo[i].philo_thread, NULL, routine, &d->philo[i]);
-		//usleep(50);
-		i++;
-	}
-	i = 0;
-	while (i < d->number_of_philo)
-	{
-		d->philo[i].left_fork = &d->philo[(i + 1) % d->number_of_philo].right_fork;
-		i++;
-	}
-	i = 0;
-	while (i < d->number_of_philo)
-	{
-		pthread_create(&d->philo[i].philo_thread, NULL, routine, &d->philo[i]);
-		usleep(50);
+		eating(tmp);
+		sleeping(tmp);
+		thinking(tmp);
 		i++;
 	}
 }
 
-void	wait_for_thread(t_data *d)
+void	philo(t_philo *p, pthread_t *t, int number)
 {
-	int	i;
+	int	i = 0;
 
-	i = 0;
-	while (i < d->number_of_philo)
+	while (i < number)
 	{
-		pthread_join(d->philo[i].philo_thread, NULL);
+		pthread_create(&t[i], NULL, routine, &p[i]);
 		i++;
 	}
 }
 
 int	main(int argc, char **argv)
 {
-	t_data data;
+	int	number = 4;
+	pthread_t *t = malloc(sizeof(pthread_t) * number);
+	t_philo *p = malloc(sizeof(t_philo) * number);
 
-	init_data(&data, argv);
-	init_philo(&data);
-	wait_for_thread(&data);
-	//philo(data);
-	//clean_struct(data);
+	init_philo(p, number);
+	philo(p, t, number);
+	wait_for_all_threads(t, number);
+	destroy_all_mutex(p, number);
+	return (0);
 }

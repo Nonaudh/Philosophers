@@ -1,59 +1,36 @@
 #include "../inc/philo.h"
 
-void	eating_right_first(t_philo *p)
+void	init_id(t_philo *p, int number)
 {
-	pthread_mutex_lock(&p->right_fork);
-	printf("%d right fork\n", p->number);
-	pthread_mutex_lock(p->left_fork);
-	printf("%d left fork\n", p->number);
-	printf("%d eating\n", p->number);
-	usleep(p->time_to_eat);
-	pthread_mutex_unlock(&p->right_fork);
-	printf("%d right drop\n", p->number);
-	pthread_mutex_unlock(p->left_fork);
-	printf("%d left drop\n", p->number);
-}
+	int	i = 0;
 
-void	eating_left_first(t_philo *p)
-{
-	pthread_mutex_lock(p->left_fork);
-	printf("%d left fork\n", p->number);
-	pthread_mutex_lock(&p->right_fork);
-	printf("%d right fork\n", p->number);
-	printf("%d eating\n", p->number);
-	usleep(p->time_to_eat);
-	pthread_mutex_unlock(p->left_fork);
-	printf("%d left drop\n", p->number);
-	pthread_mutex_unlock(&p->right_fork);
-	printf("%d right drop\n", p->number);
-}
-	
-
-void	sleeping(t_philo *p)
-{
-	printf("%d sleeping\n", p->number);
-	usleep(p->time_to_sleep);
-}
-void	thinking(t_philo *p)
-{
-	printf("%d thinking\n", p->number);
-}
-
-void	*routine(void *p)
-{
-	t_philo *tmp;
-
-	tmp = p;
-	int i = 0;
-	while (i < 3)//!p->stop)
+	while (i < number)
 	{
-		if (tmp->number % 2 == 0)
-			eating_right_first(tmp);
-		else
-			eating_left_first(tmp);
-		sleeping(tmp);
-		thinking(tmp);
+		p[i].id = i + 1;
+		p[i].number = number;
 		i++;
 	}
-	return (NULL);
+}
+void	init_forks(t_philo *p, int number)
+{
+	int	i = 0;
+
+	while (i < number)
+	{
+		pthread_mutex_init(&p[i].right_fork, NULL);
+		i++;
+	}
+
+	i = 0;
+	while (i < number)
+	{
+		p[i].left_fork = &p[(i + 1) % number].right_fork;
+		i++;
+	}
+}
+
+void	init_philo(t_philo *p, int number)
+{
+	init_id(p, number);
+	init_forks(p, number);
 }
