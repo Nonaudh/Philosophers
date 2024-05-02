@@ -48,7 +48,7 @@ void	thinking(t_philo *p)
 
 void	*routine(void *p)
 {
-	t_philo *tmp = p;
+	t_philo *tmp = (t_philo *)p;
 	int i = 0;
 
 	while (i < 2)
@@ -73,7 +73,7 @@ void	philo(t_philo *p, pthread_t *t, int number)
 
 int	main(int argc, char **argv)
 {
-	int	number = 2;
+	int	number = 4;
 	pthread_t *t = malloc(sizeof(pthread_t) * number);
 	t_philo *p = malloc(sizeof(t_philo) * number);
 
