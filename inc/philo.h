@@ -13,10 +13,6 @@ typedef enum	e_bool
 	true
 }	t_bool;
 
-typedef struct s_stick
-{
-	pthread_mutex_t stick;
-}	t_stick;
 
 typedef struct s_philo
 {
@@ -24,7 +20,7 @@ typedef struct s_philo
 	int	number;
 	pthread_mutex_t right_fork;
 	pthread_mutex_t *left_fork;
-	t_stick *speak;
+	pthread_mutex_t *speak;
 }	t_philo;
 
 void	init_philo(t_philo *p, int number);

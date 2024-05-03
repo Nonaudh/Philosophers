@@ -14,14 +14,10 @@ void	init_id(t_philo *p, int number)
 void	init_forks(t_philo *p, int number)
 {
 	int	i = 0;
-	t_stick stick;
 
-	if (pthread_mutex_init(&stick.stick, NULL) != 0)
-		printf("ERROR\n");
 	while (i < number)
 	{
 		pthread_mutex_init(&p[i].right_fork, NULL);
-		p[i].speak = &stick;
 		i++;
 	}
 	i = 0;
@@ -32,8 +28,20 @@ void	init_forks(t_philo *p, int number)
 	}
 }
 
+void	init_speak(t_philo *p, int number)
+{
+	int	i = 0;
+	pthread_mutex_t *speak1 = malloc(sizeof(pthread_mutex_t));
+	while (i < number)
+	{
+		p[i].speak = speak1;
+		i++;
+	}
+}
+
 void	init_philo(t_philo *p, int number)
 {
 	init_id(p, number);
 	init_forks(p, number);
+	init_speak(p, number);
 }
