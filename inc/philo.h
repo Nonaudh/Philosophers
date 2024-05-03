@@ -20,6 +20,7 @@ typedef struct s_philo
 	t_bool stop;
 	t_bool is_eating;
 	struct timeval start;
+	struct timeval last_meal;
 	pthread_mutex_t right_fork;
 	pthread_mutex_t *left_fork;
 	pthread_mutex_t *speak;
@@ -28,12 +29,16 @@ typedef struct s_philo
 typedef struct s_monitoring
 {
 	t_philo *philo;
-	struct timeval end;
+	int number;
 }	t_monitoring;
 
 void	init_philo(t_philo *p, int number);
+int 	time_diff(struct timeval *start, struct timeval *end);
 
-void	wait_for_all_threads(pthread_t *t, int number);
+void	wait_for_all_threads(pthread_t *t, pthread_t m, int number);
 void	destroy_all_mutex(t_philo *p, int number);
+int		current_time(struct timeval *start);
+
+void    moni(t_philo *p, t_monitoring *m, pthread_t *monitor, int number);
 
 #endif

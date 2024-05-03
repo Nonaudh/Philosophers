@@ -3,12 +3,14 @@
 void	right_first(t_philo *p)
 {
 	pthread_mutex_lock(&p[0].right_fork);
-	printf("%d lock_right\n", p->id);
+	printf("%d %d lock_right\n", current_time(&p->start), p->id);
 	pthread_mutex_lock(p[0].left_fork);
 	//printf("%d lock_left\n", p->id);
-	printf("%d eat\n", p->id);
+	p->is_eating = true;
+	printf("%d %d eat\n", current_time(&p->start), p->id);
 	usleep(500000);
-	gettimeofday(&p->start, NULL);
+	gettimeofday(&p->last_meal, NULL);
+	p->is_eating = false;
 	pthread_mutex_unlock(p[0].left_fork);
 	//printf("%d unlock_left\n", p->id);
 	pthread_mutex_unlock(&p[0].right_fork);
@@ -17,12 +19,14 @@ void	right_first(t_philo *p)
 void	left_first(t_philo *p)
 {
 	pthread_mutex_lock(p[0].left_fork);
-	printf("%d lock_left\n", p->id);
+	printf("%d %d lock_left\n", current_time(&p->start), p->id);
 	pthread_mutex_lock(&p[0].right_fork);
 	//printf("%d lock_right\n", p->id);
-	printf("%d eat\n", p->id);
+	p->is_eating = true;
+	printf("%d %d eat\n", current_time(&p->start), p->id);
 	usleep(500000);
-	gettimeofday(&p->start, NULL);
+	gettimeofday(&p->last_meal, NULL);
+	p->is_eating = false;
 	pthread_mutex_unlock(&p[0].right_fork);
 	//printf("%d unlock_right\n", p->id);
 	pthread_mutex_unlock(p[0].left_fork);
@@ -41,7 +45,7 @@ void	eating(t_philo *p)
 void	sleeping(t_philo *p)
 {
 	pthread_mutex_lock(p[0].speak);
-	printf("%d sleep\n", p[0].id);
+	printf("%d %d sleep\n", current_time(&p->start), p[0].id);
 	pthread_mutex_unlock(p[0].speak);
 	usleep(200000);
 }
@@ -49,21 +53,19 @@ void	sleeping(t_philo *p)
 void	thinking(t_philo *p)
 {
  	pthread_mutex_lock(p[0].speak);
-	printf("%d think\n", p[0].id);
+	printf("%d %d think\n", current_time(&p->start), p[0].id);
 	pthread_mutex_unlock(p[0].speak);
 }
 
 void	*routine(void *p)
 {
 	t_philo *tmp = (t_philo *)p;
-	int i = 0;
 
 	while (!tmp->stop)
 	{
 		eating(tmp);
 		sleeping(tmp);
 		thinking(tmp);
-		i++;
 	}
 	return (NULL);
 }
@@ -89,23 +91,25 @@ int time_diff(struct timeval *start, struct timeval *end)
 
 int	main(int argc, char **argv)
 {
-	int	number = 4;
+	int	number = 10;
 	pthread_t *t = malloc(sizeof(pthread_t) * number);
 	t_philo *p = malloc(sizeof(t_philo) * number);
+	pthread_t monitor;
 	t_monitoring monitoring;
 
 	init_philo(p, number);
-	//philo(p, t, number);
-	//wait_for_all_threads(t, number);
-	//destroy_all_mutex(p, number);
-	//free(t);
-	//free(p);
-	usleep(50000);
+	moni(p, &monitoring, &monitor, number);
+	philo(p, t, number);
+	wait_for_all_threads(t, monitor, number);
+	destroy_all_mutex(p, number);
+	free(t);
+	free(p);
+	//usleep(50000);
 	//gettimeofday(&end, NULL);
 	//printf("time; %d ms\n", time_diff(&start, &end));
 	//gettimeofday(&start, NULL);
-	usleep(25000);
-	usleep(25000);
+	//usleep(25000);
+	//usleep(25000);
 	//gettimeofday(&end, NULL);
 	//printf("time; %d ms\n", time_diff(&start, &end));
 	return (0);

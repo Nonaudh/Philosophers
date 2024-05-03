@@ -3,12 +3,11 @@
 void	init_id(t_philo *p, int number)
 {
 	int	i = 0;
-	//struct timeval start;
 
-	//gettimeofday(&start, NULL);
 	while (i < number)
 	{
 		gettimeofday(&p[i].start, NULL);
+		gettimeofday(&p[i].last_meal, NULL);
 		p[i].is_eating = false;
 		p[i].stop = false;
 		p[i].id = i + 1;
