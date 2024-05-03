@@ -2,7 +2,7 @@ CC = cc
 
 CFLAGS = -g -pthread #-fsanitize=thread #-Wall -Wextra -Werror 
 
-SRC = src/main.c  src/philo.c src/utils.c
+SRC = src/main.c  src/philo.c src/utils.c src/monitoring.c
 
 OBJ = $(SRC:%.c=%.o)
 
