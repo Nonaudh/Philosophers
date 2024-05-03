@@ -37,13 +37,17 @@ void	eating(t_philo *p)
 
 void	sleeping(t_philo *p)
 {
-	//printf("%d sleep\n", p->id);
+	pthread_mutex_lock(p->speak);
+	printf("%d sleep\n", p[0].id);
+	pthread_mutex_unlock(p->speak);
 	usleep(200);
 }
 
 void	thinking(t_philo *p)
 {
-	//printf("%d think\n", p->id);
+	pthread_mutex_lock(p->speak);
+	printf("%d think\n", p[0].id);
+	pthread_mutex_unlock(p->speak);
 }
 
 void	*routine(void *p)

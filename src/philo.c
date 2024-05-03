@@ -3,11 +3,14 @@
 void	init_id(t_philo *p, int number)
 {
 	int	i = 0;
+	pthread_mutex_t	speak;
 
+	pthread_mutex_init(&speak, NULL);
 	while (i < number)
 	{
 		p[i].id = i + 1;
 		p[i].number = number;
+		p[i].speak = &speak;
 		i++;
 	}
 }

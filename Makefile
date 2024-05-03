@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -g -pthread #-Wall -Wextra -Werror 
+CFLAGS = -g -pthread #-fsanitize=thread #-Wall -Wextra -Werror 
 
 SRC = src/main.c  src/philo.c src/utils.c
 
