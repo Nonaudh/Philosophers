@@ -5,7 +5,7 @@ void	right_first(t_philo *p)
 	//printf("%d lock_right\n", p->id);
 	pthread_mutex_lock(p[0].left_fork);
 	//printf("%d lock_left\n", p->id);
-	//printf("%d eat\n", p->id);
+	printf("%d eat\n", p->id);
 	usleep(5000);
 	pthread_mutex_unlock(p[0].left_fork);
 	//printf("%d unlock_left\n", p->id);
@@ -18,7 +18,7 @@ void	left_first(t_philo *p)
 	//printf("%d lock_left\n", p->id);
 	pthread_mutex_lock(&p[0].right_fork);
 	//printf("%d lock_right\n", p->id);
-	//printf("%d eat\n", p->id);
+	printf("%d eat\n", p->id);
 	usleep(5000);
 	pthread_mutex_unlock(&p[0].right_fork);
 	//printf("%d unlock_right\n", p->id);
@@ -37,17 +37,17 @@ void	eating(t_philo *p)
 
 void	sleeping(t_philo *p)
 {
-	pthread_mutex_lock(p->speak);
+	//pthread_mutex_lock(&p->speak->stick);
 	printf("%d sleep\n", p[0].id);
-	pthread_mutex_unlock(p->speak);
+	//pthread_mutex_unlock(&p->speak->stick);
 	usleep(200);
 }
 
 void	thinking(t_philo *p)
 {
-	pthread_mutex_lock(p->speak);
+ 	//pthread_mutex_lock(p->speak);
 	printf("%d think\n", p[0].id);
-	pthread_mutex_unlock(p->speak);
+	//pthread_mutex_unlock(p->speak);
 }
 
 void	*routine(void *p)
