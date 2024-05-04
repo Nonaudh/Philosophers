@@ -36,6 +36,7 @@ void	init_speak(t_philo *p, int number)
 {
 	int	i = 0;
 	pthread_mutex_t *speak1 = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(speak1, NULL);
 	while (i < number)
 	{
 		p[i].speak = speak1;

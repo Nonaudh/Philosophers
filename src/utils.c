@@ -17,7 +17,8 @@ void	destroy_all_mutex(t_philo *p, int number)
 	int	i;
 
 	i = 0;
-	pthread_mutex_destroy(p[0].speak);
+	pthread_mutex_destroy(p->speak);
+	free(p->speak);
 	while (i < number)
 	{
 		pthread_mutex_destroy(&p[i].right_fork);

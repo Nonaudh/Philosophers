@@ -47,7 +47,7 @@ void	sleeping(t_philo *p)
 	pthread_mutex_lock(p[0].speak);
 	printf("%d %d sleep\n", current_time(&p->start), p[0].id);
 	pthread_mutex_unlock(p[0].speak);
-	usleep(200000);
+	usleep(600000);
 }
 
 void	thinking(t_philo *p)

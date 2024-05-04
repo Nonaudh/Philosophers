@@ -24,14 +24,16 @@ void    *check_for_dead(void *data)
 	{
 		while (!one_dead && i < m->number)
 		{
-			if (!m->philo[i].is_eating && current_time(&m->philo[i].last_meal) > 800)
+			if (!m->philo[i].is_eating && current_time(&m->philo[i].last_meal) > 510)
 			{
 				printf("%d %d died\n", current_time(&m->philo[i].start), m->philo[i].id);
 				set_all_philo_to_dead(m->philo, m->number);
 				one_dead = true;
 			}
-			i = (i + 1) % m->number;
+			i++;
 		}
+		usleep(5000);
+		i = 0;
 	}
 	return (NULL);
 }
