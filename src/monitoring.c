@@ -24,7 +24,7 @@ void    *check_for_dead(void *data)
 	{
 		while (!one_dead && i < m->number)
 		{
-			if (!m->philo[i].is_eating && current_time(&m->philo[i].last_meal) > 510)
+			if (!m->philo[i].is_eating && current_time(&m->philo[i].last_meal) > m->time_to_die)
 			{
 				printf("%d %d died\n", current_time(&m->philo[i].start), m->philo[i].id);
 				set_all_philo_to_dead(m->philo, m->number);

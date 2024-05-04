@@ -8,7 +8,7 @@ void	right_first(t_philo *p)
 	//printf("%d lock_left\n", p->id);
 	p->is_eating = true;
 	printf("%d %d eat\n", current_time(&p->start), p->id);
-	usleep(500000);
+	usleep(p->time_to_eat);
 	gettimeofday(&p->last_meal, NULL);
 	p->is_eating = false;
 	pthread_mutex_unlock(p[0].left_fork);
@@ -24,7 +24,7 @@ void	left_first(t_philo *p)
 	//printf("%d lock_right\n", p->id);
 	p->is_eating = true;
 	printf("%d %d eat\n", current_time(&p->start), p->id);
-	usleep(500000);
+	usleep(p->time_to_eat);
 	gettimeofday(&p->last_meal, NULL);
 	p->is_eating = false;
 	pthread_mutex_unlock(&p[0].right_fork);
@@ -47,7 +47,7 @@ void	sleeping(t_philo *p)
 	pthread_mutex_lock(p[0].speak);
 	printf("%d %d sleep\n", current_time(&p->start), p[0].id);
 	pthread_mutex_unlock(p[0].speak);
-	usleep(600000);
+	usleep(p->time_to_sleep);
 }
 
 void	thinking(t_philo *p)
@@ -74,6 +74,7 @@ void	philo(t_philo *p, pthread_t *t, int number)
 {
 	int	i = 0;
 
+	//t = malloc(sizeof(pthread_t) * number);
 	while (i < number)
 	{
 		pthread_create(&t[i], NULL, routine, &p[i]);
@@ -88,29 +89,42 @@ int time_diff(struct timeval *start, struct timeval *end)
 		+ 1e-3 * (end->tv_usec - start->tv_usec));
 }
 
+void	show_philo(t_philo *p, int number)
+{
+	int i = 0;
+
+	printf("num; %d\n", number);
+	while (i < number)
+	{
+		printf("id; %d\n", p->id);
+		i++;
+	}
+	exit(EXIT_SUCCESS);
+}
 
 int	main(int argc, char **argv)
 {
-	int	number = 10;
+	int	number = atol(argv[1]);
 	pthread_t *t = malloc(sizeof(pthread_t) * number);
-	t_philo *p = malloc(sizeof(t_philo) * number);
+	t_philo *p;// = malloc(sizeof(t_philo) * number);
 	pthread_t monitor;
 	t_monitoring monitoring;
 
-	init_philo(p, number);
-	moni(p, &monitoring, &monitor, number);
-	philo(p, t, number);
-	wait_for_all_threads(t, monitor, number);
-	destroy_all_mutex(p, number);
-	free(t);
-	free(p);
-	//usleep(50000);
-	//gettimeofday(&end, NULL);
-	//printf("time; %d ms\n", time_diff(&start, &end));
-	//gettimeofday(&start, NULL);
-	//usleep(25000);
-	//usleep(25000);
-	//gettimeofday(&end, NULL);
-	//printf("time; %d ms\n", time_diff(&start, &end));
+  	//p = malloc(sizeof(t_philo) * number);
+	if (argc == 5)
+	{
+		p = malloc(sizeof(t_philo) * number);
+		check_argv(argv);
+		init_philo(p, &monitoring, argv, number);
+		//show_philo(p, number);
+		moni(p, &monitoring, &monitor, number);
+		philo(p, t, number);
+		wait_for_all_threads(t, monitor, number);
+		destroy_all_mutex(p, number);
+		free(t);
+		free(p);
+	}
+	else
+		printf("Error argv\n");
 	return (0);
 }
