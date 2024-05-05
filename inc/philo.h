@@ -16,9 +16,10 @@ typedef enum	e_bool
 typedef struct s_philo
 {
 	int id;
-	int	number;
 	int	time_to_eat;
 	int	time_to_sleep;
+	int	must_eat_times;
+	int number_of_meal;
 	t_bool stop;
 	t_bool is_eating;
 	struct timeval start;
@@ -46,5 +47,8 @@ int		is_digit(char c);
 long	ft_atol(const char *nptr);
 
 void    moni(t_philo *p, t_monitoring *m, pthread_t *monitor, int number);
+
+
+void	show_philo(t_philo *p, int number);
 
 #endif

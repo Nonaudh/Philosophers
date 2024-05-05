@@ -59,7 +59,7 @@ void	check_argv(char **argv)
 
 int	is_digit(char c)
 {
-	return(c >= '0' &&c <= '9');
+	return(c >= '0' && c <= '9');
 }
 
 long	ft_atol(const char *nptr)

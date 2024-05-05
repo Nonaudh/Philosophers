@@ -5,22 +5,26 @@ void	init_id(t_philo *p, t_monitoring *m, char **argv, int number)
 	int	i = 0;
 	int	time_eating;
 	int	time_sleeping;
+	int	must_eat_times;
 
-	//*number = atol(argv[1]);
 	m->time_to_die = atol(argv[2]);
 	time_eating = (atol(argv[3]) * 1000);
 	time_sleeping = (atol(argv[4]) * 1000);
-	//p = malloc(sizeof(t_philo) * (*number));
+	if (argv[5])
+		must_eat_times = (atol(argv[5]));
+	else
+		must_eat_times = -1;
 	while (i < number)
 	{
 		gettimeofday(&p[i].start, NULL);
 		gettimeofday(&p[i].last_meal, NULL);
 		p[i].time_to_eat = time_eating;
 		p[i].time_to_sleep = time_sleeping;
+		p[i].must_eat_times = must_eat_times;
+		p[i].number_of_meal = 0;
 		p[i].is_eating = false;
 		p[i].stop = false;
 		p[i].id = i + 1;
-		//p[i].number = number;
 		i++;
 	}
 }
@@ -55,7 +59,6 @@ void	init_speak(t_philo *p, int number)
 
 void	init_philo(t_philo *p, t_monitoring *m, char **argv, int number)
 {
-	p = malloc(sizeof(t_philo) * number);
 	init_id(p, m, argv, number);
 	init_forks(p, number);
 	init_speak(p, number);

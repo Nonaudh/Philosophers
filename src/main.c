@@ -9,6 +9,7 @@ void	right_first(t_philo *p)
 	p->is_eating = true;
 	printf("%d %d eat\n", current_time(&p->start), p->id);
 	usleep(p->time_to_eat);
+	p->number_of_meal++;
 	gettimeofday(&p->last_meal, NULL);
 	p->is_eating = false;
 	pthread_mutex_unlock(p[0].left_fork);
@@ -25,6 +26,7 @@ void	left_first(t_philo *p)
 	p->is_eating = true;
 	printf("%d %d eat\n", current_time(&p->start), p->id);
 	usleep(p->time_to_eat);
+	p->number_of_meal++;
 	gettimeofday(&p->last_meal, NULL);
 	p->is_eating = false;
 	pthread_mutex_unlock(&p[0].right_fork);
@@ -96,7 +98,7 @@ void	show_philo(t_philo *p, int number)
 	printf("num; %d\n", number);
 	while (i < number)
 	{
-		printf("id; %d\n", p->id);
+		printf("id; %d\n", p[i].id);
 		i++;
 	}
 	exit(EXIT_SUCCESS);
@@ -111,7 +113,7 @@ int	main(int argc, char **argv)
 	t_monitoring monitoring;
 
   	//p = malloc(sizeof(t_philo) * number);
-	if (argc == 5)
+	if (argc == 5 || argc == 6)
 	{
 		p = malloc(sizeof(t_philo) * number);
 		check_argv(argv);
