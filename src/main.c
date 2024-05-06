@@ -3,36 +3,34 @@
 void	right_first(t_philo *p)
 {
 	pthread_mutex_lock(&p[0].right_fork);
-	printf("%d %d lock_right\n", current_time(&p->start), p->id);
+	if (!p->stop)
+		printf("%d %d has taken a fork\n", current_time(&p->start), p->id);
 	pthread_mutex_lock(p[0].left_fork);
-	//printf("%d lock_left\n", p->id);
 	p->is_eating = true;
-	printf("%d %d eat\n", current_time(&p->start), p->id);
+	if (!p->stop)
+		printf("%d %d is eating\n", current_time(&p->start), p->id);
 	usleep(p->time_to_eat);
+	p->is_eating = false;
 	p->number_of_meal++;
 	gettimeofday(&p->last_meal, NULL);
-	p->is_eating = false;
 	pthread_mutex_unlock(p[0].left_fork);
-	//printf("%d unlock_left\n", p->id);
 	pthread_mutex_unlock(&p[0].right_fork);
-	//printf("%d unlock_right\n", p->id);
 }
 void	left_first(t_philo *p)
 {
 	pthread_mutex_lock(p[0].left_fork);
-	printf("%d %d lock_left\n", current_time(&p->start), p->id);
+	if (!p->stop)
+		printf("%d %d has taken a fork\n", current_time(&p->start), p->id);
 	pthread_mutex_lock(&p[0].right_fork);
-	//printf("%d lock_right\n", p->id);
 	p->is_eating = true;
-	printf("%d %d eat\n", current_time(&p->start), p->id);
+	if (!p->stop)
+		printf("%d %d is eating\n", current_time(&p->start), p->id);
 	usleep(p->time_to_eat);
+	p->is_eating = false;
 	p->number_of_meal++;
 	gettimeofday(&p->last_meal, NULL);
-	p->is_eating = false;
 	pthread_mutex_unlock(&p[0].right_fork);
-	//printf("%d unlock_right\n", p->id);
 	pthread_mutex_unlock(p[0].left_fork);
-	//printf("%d unlock_left\n", p->id);
 }
 
 
@@ -46,17 +44,19 @@ void	eating(t_philo *p)
 
 void	sleeping(t_philo *p)
 {
-	pthread_mutex_lock(p[0].speak);
-	printf("%d %d sleep\n", current_time(&p->start), p[0].id);
-	pthread_mutex_unlock(p[0].speak);
+	pthread_mutex_lock(p[0].access_data);
+	if (!p->stop)
+		printf("%d %d is sleeping\n", current_time(&p->start), p[0].id);
+	pthread_mutex_unlock(p[0].access_data);
 	usleep(p->time_to_sleep);
 }
 
 void	thinking(t_philo *p)
 {
- 	pthread_mutex_lock(p[0].speak);
-	printf("%d %d think\n", current_time(&p->start), p[0].id);
-	pthread_mutex_unlock(p[0].speak);
+ 	pthread_mutex_lock(p[0].access_data);
+	if (!p->stop)
+		printf("%d %d is thinkng\n", current_time(&p->start), p[0].id);
+	pthread_mutex_unlock(p[0].access_data);
 }
 
 void	*routine(void *p)
@@ -65,9 +65,12 @@ void	*routine(void *p)
 
 	while (!tmp->stop)
 	{
-		eating(tmp);
-		sleeping(tmp);
-		thinking(tmp);
+		if (!tmp->stop)
+			eating(tmp);
+		if (!tmp->stop)
+			sleeping(tmp);
+		if (!tmp->stop)
+			thinking(tmp);
 	}
 	return (NULL);
 }
@@ -76,7 +79,6 @@ void	philo(t_philo *p, pthread_t *t, int number)
 {
 	int	i = 0;
 
-	//t = malloc(sizeof(pthread_t) * number);
 	while (i < number)
 	{
 		pthread_create(&t[i], NULL, routine, &p[i]);
@@ -91,34 +93,20 @@ int time_diff(struct timeval *start, struct timeval *end)
 		+ 1e-3 * (end->tv_usec - start->tv_usec));
 }
 
-void	show_philo(t_philo *p, int number)
-{
-	int i = 0;
-
-	printf("num; %d\n", number);
-	while (i < number)
-	{
-		printf("id; %d\n", p[i].id);
-		i++;
-	}
-	exit(EXIT_SUCCESS);
-}
-
 int	main(int argc, char **argv)
 {
 	int	number = atol(argv[1]);
-	pthread_t *t = malloc(sizeof(pthread_t) * number);
-	t_philo *p;// = malloc(sizeof(t_philo) * number);
+	pthread_t *t;
+	t_philo *p;
 	pthread_t monitor;
 	t_monitoring monitoring;
 
-  	//p = malloc(sizeof(t_philo) * number);
 	if (argc == 5 || argc == 6)
 	{
-		p = malloc(sizeof(t_philo) * number);
 		check_argv(argv);
+		p = malloc(sizeof(t_philo) * number);
+		t = malloc(sizeof(pthread_t) * number);
 		init_philo(p, &monitoring, argv, number);
-		//show_philo(p, number);
 		moni(p, &monitoring, &monitor, number);
 		philo(p, t, number);
 		wait_for_all_threads(t, monitor, number);
@@ -127,6 +115,8 @@ int	main(int argc, char **argv)
 		free(p);
 	}
 	else
-		printf("Error argv\n");
+	{
+		printf("Error\n\n./philo number_of_philosophers time_to_die time_to_eat time_to_sleep\n[number_of_times_each_philosopher_must_eat]\n");
+	}
 	return (0);
 }

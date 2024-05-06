@@ -26,7 +26,7 @@ typedef struct s_philo
 	struct timeval last_meal;
 	pthread_mutex_t right_fork;
 	pthread_mutex_t *left_fork;
-	pthread_mutex_t *speak;
+	pthread_mutex_t *access_data;
 }	t_philo;
 
 typedef struct s_monitoring

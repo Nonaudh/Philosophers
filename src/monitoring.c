@@ -1,6 +1,6 @@
 #include "../inc/philo.h"
 
-void	set_all_philo_to_dead(t_philo *p, int number)
+void	stop_all_philo(t_philo *p, int number)
 {
 	int	i;
 
@@ -23,7 +23,7 @@ t_bool	all_philo_are_alive(t_philo *p, int number, int time_to_die)
 	}
 	if (i == number)
 		return (true);
-	printf("%d %d DIED !!\n", current_time(&p[i].last_meal), p[i].id);
+	printf("%d %d died\n", current_time(&p[i].start), p[i].id);
 	return (false);
 }
 
@@ -44,16 +44,14 @@ t_bool	philo_still_need_to_eat(t_philo *p, int number, int must_eat_times)
 void    *check_for_dead(void *data)
 {
 	t_monitoring *m = (t_monitoring *)data;
-	int	i;
 
-	i = 0;
 	while (all_philo_are_alive(m->philo, m->number, m->time_to_die) 
 		&& (m->philo->must_eat_times == -1 
 		|| philo_still_need_to_eat(m->philo, m->number, m->philo->must_eat_times)))
 	{
 		usleep(5000);
 	}
-	set_all_philo_to_dead(m->philo, m->number);
+	stop_all_philo(m->philo, m->number);
 	return(NULL);
 }
 void    moni(t_philo *p, t_monitoring *m, pthread_t *monitor, int number)

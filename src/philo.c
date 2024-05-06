@@ -52,7 +52,7 @@ void	init_speak(t_philo *p, int number)
 	pthread_mutex_init(speak1, NULL);
 	while (i < number)
 	{
-		p[i].speak = speak1;
+		p[i].access_data = speak1;
 		i++;
 	}
 }
