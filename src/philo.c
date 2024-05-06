@@ -48,11 +48,13 @@ void	init_forks(t_philo *p, int number)
 void	init_speak(t_philo *p, int number)
 {
 	int	i = 0;
-	pthread_mutex_t *speak1 = malloc(sizeof(pthread_mutex_t));
-	pthread_mutex_init(speak1, NULL);
+	pthread_mutex_t *data;
+	
+	data = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(data, NULL);
 	while (i < number)
 	{
-		p[i].access_data = speak1;
+		p[i].access_data = data;
 		i++;
 	}
 }
