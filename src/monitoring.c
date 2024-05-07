@@ -7,7 +7,9 @@ void	stop_all_philo(t_philo *p, int number)
 	i = 0;
 	while (i < number)
 	{
+		pthread_mutex_lock(p->access_data);
 		p[i].stop = true;
+		pthread_mutex_unlock(p->access_data);
 		i++;
 	}
 }
@@ -17,10 +19,14 @@ t_bool	all_philo_are_alive(t_philo *p, int number, int time_to_die)
 	int	i;
 
 	i = 0;
+	pthread_mutex_lock(p->access_data);
 	while (i < number && (p[i].is_eating || current_time(&p[i].last_meal) < time_to_die))
 	{
+		pthread_mutex_unlock(p->access_data);
 		i++;
+		pthread_mutex_lock(p->access_data);
 	}
+	pthread_mutex_unlock(p->access_data);
 	if (i == number)
 		return (true);
 	printf("%d %d died\n", current_time(&p[i].start), p[i].id);
@@ -32,10 +38,14 @@ t_bool	philo_still_need_to_eat(t_philo *p, int number, int must_eat_times)
 	int	i;
 
 	i = 0;
+	pthread_mutex_lock(p->access_data);
 	while (i < number && p[i].number_of_meal <= must_eat_times)
 	{
+		pthread_mutex_unlock(p->access_data);
 		i++;
+		pthread_mutex_lock(p->access_data);
 	}
+	pthread_mutex_unlock(p->access_data);
 	if (i == number)
 		return (true);
 	return(false);

@@ -2,41 +2,64 @@
 
 void	right_first(t_philo *p)
 {
-	pthread_mutex_lock(&p[0].right_fork);
+	pthread_mutex_lock(&p->right_fork);
+	pthread_mutex_lock(p->access_data);
 	if (!p->stop)
 		printf("%d %d has taken a fork\n", current_time(&p->start), p->id);
-	pthread_mutex_lock(p[0].left_fork);
+	pthread_mutex_unlock(p->access_data);
+	pthread_mutex_lock(p->left_fork);
+	pthread_mutex_lock(p->access_data);
 	p->is_eating = true;
 	if (!p->stop)
 		printf("%d %d is eating\n", current_time(&p->start), p->id);
+	pthread_mutex_unlock(p->access_data);
 	usleep(p->time_to_eat);
+	pthread_mutex_lock(p->access_data);
 	p->is_eating = false;
 	p->number_of_meal++;
 	gettimeofday(&p->last_meal, NULL);
-	pthread_mutex_unlock(p[0].left_fork);
-	pthread_mutex_unlock(&p[0].right_fork);
+	pthread_mutex_unlock(p->access_data);
+	pthread_mutex_unlock(p->left_fork);
+	pthread_mutex_unlock(&p->right_fork);
 }
 void	left_first(t_philo *p)
 {
-	pthread_mutex_lock(p[0].left_fork);
+	if (!p->left_fork)
+	{
+		pthread_mutex_lock(&p->right_fork);
+		printf("OK\n");
+	}
+	else
+		pthread_mutex_lock(p->left_fork);
+	pthread_mutex_lock(p->access_data);
 	if (!p->stop)
 		printf("%d %d has taken a fork\n", current_time(&p->start), p->id);
-	pthread_mutex_lock(&p[0].right_fork);
+	if (!p->left_fork)
+	{
+		printf("KO\n");
+		return ;
+	}
+	pthread_mutex_unlock(p->access_data);
+	pthread_mutex_lock(&p->right_fork);
+	pthread_mutex_lock(p->access_data);
 	p->is_eating = true;
 	if (!p->stop)
 		printf("%d %d is eating\n", current_time(&p->start), p->id);
+	pthread_mutex_unlock(p->access_data);
 	usleep(p->time_to_eat);
+	pthread_mutex_lock(p->access_data);
 	p->is_eating = false;
 	p->number_of_meal++;
 	gettimeofday(&p->last_meal, NULL);
-	pthread_mutex_unlock(&p[0].right_fork);
-	pthread_mutex_unlock(p[0].left_fork);
+	pthread_mutex_unlock(p->access_data);
+	pthread_mutex_unlock(&p->right_fork);
+	pthread_mutex_unlock(p->left_fork);
 }
 
 
 void	eating(t_philo *p)
 {
-	if (p[0].id % 2 == 0)
+	if (p->id % 2 == 0)
 		right_first(p);
 	else
 		left_first(p);
@@ -44,33 +67,45 @@ void	eating(t_philo *p)
 
 void	sleeping(t_philo *p)
 {
-	pthread_mutex_lock(p[0].access_data);
+	pthread_mutex_lock(p->access_data);
 	if (!p->stop)
-		printf("%d %d is sleeping\n", current_time(&p->start), p[0].id);
-	pthread_mutex_unlock(p[0].access_data);
+		printf("%d %d is sleeping\n", current_time(&p->start), p->id);
+	pthread_mutex_unlock(p->access_data);
 	usleep(p->time_to_sleep);
 }
 
 void	thinking(t_philo *p)
 {
- 	pthread_mutex_lock(p[0].access_data);
+ 	pthread_mutex_lock(p->access_data);
 	if (!p->stop)
-		printf("%d %d is thinkng\n", current_time(&p->start), p[0].id);
-	pthread_mutex_unlock(p[0].access_data);
+		printf("%d %d is thinking\n", current_time(&p->start), p->id);
+	pthread_mutex_unlock(p->access_data);
 }
 
 void	*routine(void *p)
 {
 	t_philo *tmp = (t_philo *)p;
+	t_bool stop;
 
-	while (!tmp->stop)
+	pthread_mutex_lock(tmp->access_data);
+	stop = tmp->stop;
+	pthread_mutex_unlock(tmp->access_data);
+	while (!stop)
 	{
-		if (!tmp->stop)
-			eating(tmp);
-		if (!tmp->stop)
+		eating(tmp);
+		pthread_mutex_lock(tmp->access_data);
+		stop = tmp->stop;
+		pthread_mutex_unlock(tmp->access_data);
+		if (!stop)
 			sleeping(tmp);
-		if (!tmp->stop)
+		pthread_mutex_lock(tmp->access_data);
+		stop = tmp->stop;
+		pthread_mutex_unlock(tmp->access_data);
+		if (!stop)
 			thinking(tmp);
+		pthread_mutex_lock(tmp->access_data);
+		stop = tmp->stop;
+		pthread_mutex_unlock(tmp->access_data);
 	}
 	return (NULL);
 }
@@ -82,7 +117,7 @@ void	philo(t_philo *p, pthread_t *t, int number)
 	while (i < number)
 	{
 		pthread_create(&t[i], NULL, routine, &p[i]);
-		usleep(500);
+		usleep(50);
 		i++;
 	}
 }

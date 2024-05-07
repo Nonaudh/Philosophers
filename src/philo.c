@@ -40,7 +40,10 @@ void	init_forks(t_philo *p, int number)
 	i = 0;
 	while (i < number)
 	{
-		p[i].left_fork = &p[(i + 1) % number].right_fork;
+		if (number == 1)
+			p[i].left_fork = NULL;
+		else
+			p[i].left_fork = &p[(i + 1) % number].right_fork;
 		i++;
 	}
 }

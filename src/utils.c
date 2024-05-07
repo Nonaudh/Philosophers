@@ -48,7 +48,7 @@ void	check_argv(char **argv)
 			if (!is_digit(argv[i][y]))
 			{
 				printf("Error\n");
-				exit(EXIT_FAILURE);
+				exit(EXIT_FAILURE); /////////// forbiden
 			}
 				
 			y++;
