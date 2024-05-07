@@ -1,5 +1,18 @@
 #include "../inc/philo.h"
 
+void	wait_for_death(t_philo *p)
+{
+	pthread_mutex_lock(p->access_data);
+	while (!p->stop)
+	{
+		pthread_mutex_unlock(p->access_data);
+		usleep(50);
+		pthread_mutex_lock(p->access_data);
+	}
+	pthread_mutex_unlock(p->access_data);
+	pthread_mutex_unlock(&p->right_fork);
+}
+
 void	right_first(t_philo *p)
 {
 	pthread_mutex_lock(&p->right_fork);
@@ -7,6 +20,11 @@ void	right_first(t_philo *p)
 	if (!p->stop)
 		printf("%d %d has taken a fork\n", current_time(&p->start), p->id);
 	pthread_mutex_unlock(p->access_data);
+	if (!p->left_fork)
+	{
+		wait_for_death(p);
+		return ;
+	}	
 	pthread_mutex_lock(p->left_fork);
 	pthread_mutex_lock(p->access_data);
 	p->is_eating = true;
@@ -24,21 +42,10 @@ void	right_first(t_philo *p)
 }
 void	left_first(t_philo *p)
 {
-	if (!p->left_fork)
-	{
-		pthread_mutex_lock(&p->right_fork);
-		printf("OK\n");
-	}
-	else
-		pthread_mutex_lock(p->left_fork);
+	pthread_mutex_lock(p->left_fork);
 	pthread_mutex_lock(p->access_data);
 	if (!p->stop)
 		printf("%d %d has taken a fork\n", current_time(&p->start), p->id);
-	if (!p->left_fork)
-	{
-		printf("KO\n");
-		return ;
-	}
 	pthread_mutex_unlock(p->access_data);
 	pthread_mutex_lock(&p->right_fork);
 	pthread_mutex_lock(p->access_data);
@@ -59,7 +66,7 @@ void	left_first(t_philo *p)
 
 void	eating(t_philo *p)
 {
-	if (p->id % 2 == 0)
+	if (p->id % 2 == 0 || !p->left_fork)
 		right_first(p);
 	else
 		left_first(p);
