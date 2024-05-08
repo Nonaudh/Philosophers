@@ -1,8 +1,9 @@
 CC = cc
 
-CFLAGS = -g -pthread -Wall -Wextra -Werror #-fsanitize=thread 
+CFLAGS = -g -pthread #-Wall -Wextra -Werror #-fsanitize=thread 
 
-SRC = src/main.c src/philo.c src/utils.c src/monitoring.c
+SRC = 	src/main.c src/check_values.c src/init_philo.c src/philosophers.c \
+		src/routine_philo.c src/monitoring.c src/utils_1.c src/utils_2.c
 
 OBJ = $(SRC:%.c=%.o)
 
@@ -11,13 +12,13 @@ NAME = philo
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o ${<:.c=.o}
 
-$(NAME) : $(OBJ) $(OBJ_BONUS) 
-	$(CC) $(OBJ) $(OBJ_BONUS) $(INCLUDE) -o $(NAME)
+$(NAME) : $(OBJ)
+	$(CC) $(OBJ) $(INCLUDE) -o $(NAME)
 
 all : $(NAME)
 
 clean :
-	rm -f $(OBJ) $(OBJ_BONUS)
+	rm -f $(OBJ)
 
 fclean : clean
 	rm -f $(NAME)
