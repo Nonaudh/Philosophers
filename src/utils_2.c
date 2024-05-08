@@ -3,7 +3,7 @@
 void    info(void)
 {
     ft_putendl_fd("Error\nInvalid argument", 2);
-    ft_putendl_fd("./philo number_of_philosophers time_to_die time_to_eat time_to_sleep\n", 2);
+    ft_putendl_fd("./philo number_of_philosophers time_to_die time_to_eat time_to_sleep", 2);
     ft_putendl_fd("[number_of_times_each_philosopher_must_eat]", 2);
 }
 
