@@ -14,7 +14,7 @@ void	stop_all_philo(t_philo *p, int number)
 	}
 }
 
-t_bool	all_philo_are_alive(t_philo *p, int number, int time_to_die)
+int	all_philo_are_alive(t_philo *p, int number, int time_to_die)
 {
 	int	i;
 
@@ -28,12 +28,12 @@ t_bool	all_philo_are_alive(t_philo *p, int number, int time_to_die)
 	}
 	pthread_mutex_unlock(p->mutex_data);
 	if (i == number)
-		return (true);
+		return (1);
 	printf("%d %d died\n", current_time(&p[i].start), p[i].philo_id);
-	return (false);
+	return (0);
 }
 
-t_bool	philo_still_need_to_eat(t_philo *p, int number, int must_eat_times)
+int	philo_still_need_to_eat(t_philo *p, int number, int must_eat_times)
 {
 	int	i;
 
@@ -47,8 +47,8 @@ t_bool	philo_still_need_to_eat(t_philo *p, int number, int must_eat_times)
 	}
 	pthread_mutex_unlock(p->mutex_data);
 	if (i == number)
-		return (true);
-	return(false);
+		return (1);
+	return(0);
 }
 
 void    *check_for_dead(void *data)
@@ -67,9 +67,11 @@ void    *check_for_dead(void *data)
 	stop_all_philo(m->philo, m->number);
 	return(NULL);
 }
-void    moni(t_philo *p, t_monitoring *m, int number)
+int	moni(t_philo *p, t_monitoring *m, int number)
 {
 	m->philo = p;
 	m->number = number;
-	pthread_create(&m->thread_id, NULL, check_for_dead, m);
+	if (pthread_create(&m->thread_id, NULL, check_for_dead, m))
+		return (1);
+	return (0);
 }

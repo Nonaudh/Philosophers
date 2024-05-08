@@ -49,8 +49,8 @@ int	philosophers(t_philo *p, int number)
 	{
 		if (pthread_create(&p[i].thread_id, NULL, routine, &p[i]))
 			return (1);
-		if (pthread_detach(p[i].thread_id))
-			return (1);
+		//if (pthread_detach(p[i].thread_id))
+			//return (1);
 		usleep(50);
 		i++;
 	}

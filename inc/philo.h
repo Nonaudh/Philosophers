@@ -40,20 +40,20 @@ typedef struct s_monitoring
 	int	time_to_die;
 }	t_monitoring;
 
-int	main(int argc, char **argv);
+int		main(int argc, char **argv);
 
-int	check_values(char **argv);
-int	check_if_only_digit(char **argv);
-int	check_if_values_exceeding(char **argv);
-int	check_if_greater_than(long nb, int minimum);
+int		check_values(char **argv);
+int		check_if_only_digit(char **argv);
+int		check_if_values_exceeding(char **argv);
+int		check_if_value_is_between(long nb, int min, int max);
 
-int	init_philo(t_philo *p, t_monitoring *m, char **argv, int number);
-int	init_speak(t_philo *p, int number);
-int	init_forks(t_philo *p, int number);
+int		init_philo(t_philo *p, t_monitoring *m, char **argv, int number);
+int		init_data_mutex(t_philo *p, int number);
+int		init_forks(t_philo *p, int number);
 void	init_struct_values(t_philo *p, t_monitoring *m, char **argv, int number);
-int	init_time(t_philo *p, int number);
+int		init_time(t_philo *p, int number);
 
-int	philosophers(t_philo *p, int number);
+int		philosophers(t_philo *p, int number);
 void	*routine(void *data);
 void	wait_for_death(t_philo *p);
 
@@ -63,20 +63,19 @@ void	eating(t_philo *p);
 void	left_first(t_philo *p);
 void	right_first(t_philo *p);
 
-void    moni(t_philo *p, t_monitoring *m, int number);
-void    *check_for_dead(void *data);
-t_bool	philo_still_need_to_eat(t_philo *p, int number, int must_eat_times);
-t_bool	all_philo_are_alive(t_philo *p, int number, int time_to_die);
+int		moni(t_philo *p, t_monitoring *m, int number);
+void	*check_for_dead(void *data);
+int		philo_still_need_to_eat(t_philo *p, int number, int must_eat_times);
+int		all_philo_are_alive(t_philo *p, int number, int time_to_die);
 void	stop_all_philo(t_philo *p, int number);
 
 void	ft_putendl_fd(char *str, int fd);
-int	ft_strlen(char *str);
+int		ft_strlen(char *str);
 long	ft_atol(const char *nptr);
-int	is_digit(char c);
+int		is_digit(char c);
 
-int	current_time(struct timeval *start);
+int		current_time(struct timeval *start);
 void	destroy_all_mutex(t_philo *p, int number);
-void    info(void);
-
+void	info(void);
 
 #endif

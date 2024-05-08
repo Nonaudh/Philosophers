@@ -1,8 +1,8 @@
 #include "../inc/philo.h"
 
-int	check_if_greater_than(long nb, int minimum)
+int	check_if_value_is_between(long nb, int min, int max)
 {
-	if (nb > INT_MAX || nb < minimum)
+	if (nb > max || nb < min)
 		return (1);
 	return (0);
 }
@@ -14,16 +14,12 @@ int	check_if_values_exceeding(char **argv)
 	i = 1;
 	while (argv[i])
 	{
-		if (i != 5)
-		{
- 			if (check_if_greater_than(ft_atol(argv[i]), 1))
-				break;	
-		}
-		else
-		{
-			if (check_if_greater_than(ft_atol(argv[i]), 0))
-				break;
-		}
+ 		if (i == 1 && check_if_value_is_between(ft_atol(argv[i]), 1, 10000))
+			break;	
+		else if (i != 5 && check_if_value_is_between(ft_atol(argv[i]), 1, INT_MAX))
+			break;
+		else if (check_if_value_is_between(ft_atol(argv[i]), 0, INT_MAX))
+			break;
 		i++;
 	}
 	if (argv[i])

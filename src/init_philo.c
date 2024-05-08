@@ -65,7 +65,7 @@ int	init_forks(t_philo *p, int number)
 	return (0);
 }
 
-int	init_speak(t_philo *p, int number)
+int	init_data_mutex(t_philo *p, int number)
 {
 	int	i = 0;
 	pthread_mutex_t *mutex_data;
@@ -90,7 +90,7 @@ int	init_philo(t_philo *p, t_monitoring *m, char **argv, int number)
 	init_struct_values(p, m, argv, number);
 	if (init_forks(p, number))
 		return (1);
-	if (init_speak(p, number))
+	if (init_data_mutex(p, number))
 		return (1);
 	return (0);
 }

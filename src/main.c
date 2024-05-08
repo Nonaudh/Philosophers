@@ -16,8 +16,16 @@ int	main(int argc, char **argv)
 			return (1);
 		if (init_philo(philo, &monitoring, argv, number))
 			return (1);
-		philosophers(philo, number);
-		moni(philo, &monitoring, number);
+		if (philosophers(philo, number))
+			return (1);
+		if (moni(philo, &monitoring, number))
+			return (1);
+		int	i = 0;
+		while (i < number)
+		{
+			pthread_join(philo->thread_id, NULL); //////
+			i++;
+		}
 		pthread_join(monitoring.thread_id, NULL);
 		destroy_all_mutex(philo, number);
 		free(philo);
