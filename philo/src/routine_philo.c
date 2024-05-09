@@ -18,7 +18,7 @@ void	right_first(t_philo *p)
 	if (!p->stop)
 		printf("%d %d is eating\n", current_time(&p->start), p->philo_id);
 	pthread_mutex_unlock(p->mutex_data);
-	usleep(p->time_to_eat);
+	ft_msleep(p->time_to_eat, &p->stop);
 	pthread_mutex_lock(p->mutex_data);
 	p->is_eating = false;
 	p->number_of_meal++;
@@ -40,7 +40,7 @@ void	left_first(t_philo *p)
 	if (!p->stop)
 		printf("%d %d is eating\n", current_time(&p->start), p->philo_id);
 	pthread_mutex_unlock(p->mutex_data);
-	usleep(p->time_to_eat);
+	ft_msleep(p->time_to_eat, &p->stop);
 	pthread_mutex_lock(p->mutex_data);
 	p->is_eating = false;
 	p->number_of_meal++;
@@ -52,7 +52,7 @@ void	left_first(t_philo *p)
 
 void	eating(t_philo *p)
 {
-	if (p->philo_id % 2 > 0)
+	if (!p->left_fork || p->philo_id % 2 == 0)
 		right_first(p);
 	else
 		left_first(p);
@@ -64,7 +64,7 @@ void	sleeping(t_philo *p)
 	if (!p->stop)
 		printf("%d %d is sleeping\n", current_time(&p->start), p->philo_id);
 	pthread_mutex_unlock(p->mutex_data);
-	usleep(p->time_to_sleep);
+	ft_msleep(p->time_to_sleep, &p->stop);
 }
 
 void	thinking(t_philo *p)

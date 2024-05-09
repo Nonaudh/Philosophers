@@ -7,9 +7,9 @@ int	init_time(t_philo *p, int number)
 	i = 0;
 	while (i < number)
 	{
-		if (gettimeofday(&p[i].start, NULL) == -1)
+		if (gettimeofday(&p[i].start, NULL))
 			return (1);
-		if (gettimeofday(&p[i].last_meal, NULL) == -1)
+		if (gettimeofday(&p[i].last_meal, NULL))
 			return (1);
 		i++;
 	}
@@ -24,8 +24,8 @@ void	init_struct_values(t_philo *p, t_monitoring *m, char **argv, int number)
 	int	must_eat_times;
 
 	m->time_to_die = ft_atol(argv[2]);
-	time_eating = (ft_atol(argv[3]) * 1000);
-	time_sleeping = (ft_atol(argv[4]) * 1000);
+	time_eating = (ft_atol(argv[3]));
+	time_sleeping = (ft_atol(argv[4]));
 	if (argv[5])
 		must_eat_times = (ft_atol(argv[5]));
 	else

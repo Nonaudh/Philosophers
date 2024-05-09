@@ -39,7 +39,7 @@ int	philo_still_need_to_eat(t_philo *p, int number, int must_eat_times)
 
 	i = 0;
 	pthread_mutex_lock(p->mutex_data);
-	while (i < number && p[i].number_of_meal <= must_eat_times)
+	while (i < number && p[i].number_of_meal >= must_eat_times)
 	{
 		pthread_mutex_unlock(p->mutex_data);
 		i++;
@@ -47,8 +47,8 @@ int	philo_still_need_to_eat(t_philo *p, int number, int must_eat_times)
 	}
 	pthread_mutex_unlock(p->mutex_data);
 	if (i == number)
-		return (1);
-	return(0);
+		return (0);
+	return(1);
 }
 
 void    *check_for_dead(void *data)

@@ -1,8 +1,5 @@
 #include "../inc/philo.h"
 
-#include <errno.h> /////
-#include <string.h> /////
-
 void    info(void)
 {
 	ft_putendl_fd("Error\nInvalid arguments", 2);
@@ -24,6 +21,32 @@ void	destroy_all_mutex(t_philo *p, int number)
 			ft_putendl_fd("Error pthread_mutex_destroy", 2);
 		i++;
 	}
+}
+
+void	wait_for_all_threads(t_philo *p, t_monitoring *m, int number)
+{
+	int	i;
+
+	i = 0;
+	while (i < number)
+	{
+		if (pthread_join(p[i].thread_id, NULL))
+			ft_putendl_fd("Error pthread_join", 2);
+		i++;
+	}
+	if (pthread_join(m->thread_id, NULL))
+		ft_putendl_fd("Error pthread_join", 2);
+}
+
+int	ft_msleep(int milliseconds, t_bool *stop)
+{
+	struct timeval start;
+
+	if (gettimeofday(&start, NULL))
+		ft_putendl_fd("Error gettimeoftheday", 2);
+	while (!(*stop) && current_time(&start) < milliseconds)
+		usleep(500);
+	return (0);
 }
 
 int	current_time(struct timeval *start)
