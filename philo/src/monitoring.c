@@ -20,7 +20,7 @@ int	all_philo_are_alive(t_philo *p, int number, int time_to_die)
 
 	i = 0;
 	pthread_mutex_lock(p->mutex_data);
-	while (i < number && (p[i].is_eating || current_time(&p[i].last_meal) < time_to_die))
+	while (i < number &&  current_time(&p[i].last_meal) < time_to_die)//(p[i].is_eating || current_time(&p[i].last_meal) < time_to_die))
 	{
 		pthread_mutex_unlock(p->mutex_data);
 		i++;

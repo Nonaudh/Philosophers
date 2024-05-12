@@ -14,6 +14,7 @@ void	right_first(t_philo *p)
 	}	
 	pthread_mutex_lock(p->left_fork);
 	pthread_mutex_lock(p->mutex_data);
+	gettimeofday(&p->last_meal, NULL);
 	p->is_eating = true;
 	if (!p->stop)
 		printf("%d %d is eating\n", current_time(&p->start), p->philo_id);
@@ -22,7 +23,6 @@ void	right_first(t_philo *p)
 	pthread_mutex_lock(p->mutex_data);
 	p->is_eating = false;
 	p->number_of_meal++;
-	gettimeofday(&p->last_meal, NULL);
 	pthread_mutex_unlock(p->mutex_data);
 	pthread_mutex_unlock(p->left_fork);
 	pthread_mutex_unlock(&p->right_fork);
@@ -36,6 +36,7 @@ void	left_first(t_philo *p)
 	pthread_mutex_unlock(p->mutex_data);
 	pthread_mutex_lock(&p->right_fork);
 	pthread_mutex_lock(p->mutex_data);
+	gettimeofday(&p->last_meal, NULL);
 	p->is_eating = true;
 	if (!p->stop)
 		printf("%d %d is eating\n", current_time(&p->start), p->philo_id);
@@ -44,7 +45,6 @@ void	left_first(t_philo *p)
 	pthread_mutex_lock(p->mutex_data);
 	p->is_eating = false;
 	p->number_of_meal++;
-	gettimeofday(&p->last_meal, NULL);
 	pthread_mutex_unlock(p->mutex_data);
 	pthread_mutex_unlock(&p->right_fork);
 	pthread_mutex_unlock(p->left_fork);
