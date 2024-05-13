@@ -3,10 +3,13 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <sys/time.h>
 # include <pthread.h>
 # include <unistd.h>
 # include <semaphore.h>
+# include <fcntl.h>
 
 # define INT_MAX 2147483647
 
@@ -18,7 +21,7 @@ typedef enum	e_bool
 
 typedef struct s_philo
 {
-	pthread_t thread_id;
+	sem_t	*semaphore;
 	int philo_id;
 	int	time_to_eat;
 	int	time_to_sleep;
@@ -35,6 +38,28 @@ typedef struct s_monitoring
 	t_philo *philo;
 	int	time_to_die;
 }	t_monitoring;
+
+int	main(int argc, char **argv);
+
+int	check_values(char **argv);
+int	check_if_only_digit(char **argv);
+int	check_if_values_exceeding(char **argv);
+int	check_if_value_is_between(long nb, int min, int max);
+
+int	init_philo(t_philo *p, t_monitoring *m, char **argv, sem_t *semaphore);
+void	init_struct_values(t_philo *p, t_monitoring *m, char **argv, sem_t *semaphore);
+int	init_time(t_philo *p);
+
+int philosophers_bonus(t_philo *p, t_monitoring *m, int number, sem_t *semaphore_1, sem_t *semaphore_2);
+
+void	ft_putendl_fd(char *str, int fd);
+int	ft_strlen(char *str);
+long	ft_atol(const char *nptr);
+int	is_digit(char c);
+
+int	current_time(struct timeval *start);
+int	ft_msleep(int milliseconds, t_bool *stop);
+void    info(void);
 
 
 #endif

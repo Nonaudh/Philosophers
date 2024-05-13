@@ -1,6 +1,6 @@
 #include "../inc/philo_bonus.h"
 
-int	init_time(t_philo *p, int number)
+int	init_time(t_philo *p)
 {
 	if (gettimeofday(&p->start, NULL))
 		return (1);
@@ -9,26 +9,28 @@ int	init_time(t_philo *p, int number)
 	return (0);
 }
 
-void	init_struct_values(t_philo *p, t_monitoring *m, char **argv, int number)
+void	init_struct_values(t_philo *p, t_monitoring *m, char **argv, sem_t *semaphore)
 {
 	int	i = 0;
 
+	//p->semaphore = semaphore;
+	p->philo_id = 1;
 	m->time_to_die = ft_atol(argv[2]);
-	p->time_to_eat = (ft_atol(argv[3]));
-	p->time_to_sleep = (ft_atol(argv[4]));
+	p->time_to_eat = ft_atol(argv[3]);
+	p->time_to_sleep = ft_atol(argv[4]);
 	p->number_of_meal = 0;
 	p->stop = false;
 	if (argv[5])
-		p->must_eat_times = (ft_atol(argv[5]));
+		p->must_eat_times = ft_atol(argv[5]);
 	else
 		p->must_eat_times = -1;
 }
 
-int	init_philo(t_philo *p, t_monitoring *m, char **argv, int number)
+int	init_philo(t_philo *p, t_monitoring *m, char **argv, sem_t *semaphore)
 {
-	if (init_time(p, number))
+	if (init_time(p))
 		return (1);
-	init_struct_values(p, m, argv, number);
+	init_struct_values(p, m, argv, semaphore);
 
 	return (0);
 }
