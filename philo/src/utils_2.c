@@ -38,14 +38,20 @@ void	wait_for_all_threads(t_philo *p, t_monitoring *m, int number)
 		ft_putendl_fd("Error pthread_join", 2);
 }
 
-int	ft_msleep(int milliseconds, t_bool *stop)
+int	ft_msleep(int milliseconds, t_bool *stop, pthread_mutex_t *mutex)
 {
 	struct timeval start;
 
 	if (gettimeofday(&start, NULL))
 		ft_putendl_fd("Error gettimeoftheday", 2);
+	pthread_mutex_lock(mutex);
 	while (!(*stop) && current_time(&start) < milliseconds)
+	{
+		pthread_mutex_unlock(mutex);
 		usleep(500);
+		pthread_mutex_lock(mutex);		
+	}
+	pthread_mutex_unlock(mutex);
 	return (0);
 }
 

@@ -76,7 +76,7 @@ int		is_digit(char c);
 
 int		current_time(struct timeval *start);
 void	destroy_all_mutex(t_philo *p, int number);
-int		ft_msleep(int milliseconds, t_bool *stop);
+int		ft_msleep(int milliseconds, t_bool *stop, pthread_mutex_t *mutex);
 void	wait_for_all_threads(t_philo *p, t_monitoring *m, int number);
 void	info(void);
 
