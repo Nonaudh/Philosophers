@@ -16,7 +16,7 @@ int	check_if_values_exceeding(char **argv)
 	{
  		if (i == 1 && check_if_value_is_between(ft_atol(argv[i]), 1, 10000))
 			break;	
-		else if (i != 5 && check_if_value_is_between(ft_atol(argv[i]), 1, INT_MAX))
+		else if (i < 5 && check_if_value_is_between(ft_atol(argv[i]), 1, INT_MAX))
 			break;
 		else if (check_if_value_is_between(ft_atol(argv[i]), 0, INT_MAX))
 			break;
