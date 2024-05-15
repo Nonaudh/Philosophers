@@ -111,8 +111,7 @@ int philosophers_bonus(t_philo *p, t_monitoring *m, int number)
 		{
 			fork_pid[p->philo_id - 1] = pid;
 			p->philo_id++;
-		}
-			
+		}	
 	}
 	if (pid)
 		kill_all_child_process(fork_pid, number);

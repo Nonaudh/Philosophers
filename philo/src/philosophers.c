@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahuge <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/15 18:29:29 by ahuge             #+#    #+#             */
+/*   Updated: 2024/05/15 18:29:31 by ahuge            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 void	wait_for_death(t_philo *p)
@@ -15,9 +27,10 @@ void	wait_for_death(t_philo *p)
 
 void	*routine(void *data)
 {
-	t_philo *p = (t_philo *)data;
-	t_bool stop;
+	t_philo	*p;
+	t_bool	stop;
 
+	p = (t_philo *)data;
 	pthread_mutex_lock(p->mutex_data);
 	stop = p->stop;
 	pthread_mutex_unlock(p->mutex_data);
@@ -43,8 +56,9 @@ void	*routine(void *data)
 
 int	philosophers(t_philo *p, int number)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (i < number)
 	{
 		if (pthread_create(&p[i].thread_id, NULL, routine, &p[i]))

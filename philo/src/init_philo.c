@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_philo.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahuge <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/15 18:29:03 by ahuge             #+#    #+#             */
+/*   Updated: 2024/05/15 18:29:05 by ahuge            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 int	init_time(t_philo *p, int number)
@@ -18,11 +30,12 @@ int	init_time(t_philo *p, int number)
 
 void	init_struct_values(t_philo *p, t_monitoring *m, char **argv, int number)
 {
-	int	i = 0;
+	int	i;
 	int	time_eating;
 	int	time_sleeping;
 	int	must_eat_times;
 
+	i = 0;
 	m->time_to_die = ft_atol(argv[2]);
 	time_eating = (ft_atol(argv[3]));
 	time_sleeping = (ft_atol(argv[4]));
@@ -32,7 +45,6 @@ void	init_struct_values(t_philo *p, t_monitoring *m, char **argv, int number)
 		must_eat_times = -1;
 	while (i < number)
 	{
-		
 		p[i].time_to_eat = time_eating;
 		p[i].time_to_sleep = time_sleeping;
 		p[i].must_eat_times = must_eat_times;
@@ -43,10 +55,12 @@ void	init_struct_values(t_philo *p, t_monitoring *m, char **argv, int number)
 		i++;
 	}
 }
+
 int	init_forks(t_philo *p, int number)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (i < number)
 	{
 		if (pthread_mutex_init(&p[i].right_fork, NULL))
@@ -67,9 +81,10 @@ int	init_forks(t_philo *p, int number)
 
 int	init_data_mutex(t_philo *p, int number)
 {
-	int	i = 0;
-	pthread_mutex_t *mutex_data;
-	
+	int				i;
+	pthread_mutex_t	*mutex_data;
+
+	i = 0;
 	mutex_data = malloc(sizeof(pthread_mutex_t));
 	if (!mutex_data)
 		return (1);

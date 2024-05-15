@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine_philo.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahuge <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/15 18:29:43 by ahuge             #+#    #+#             */
+/*   Updated: 2024/05/15 18:29:45 by ahuge            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 void	right_first(t_philo *p)
@@ -11,7 +23,7 @@ void	right_first(t_philo *p)
 	{
 		wait_for_death(p);
 		return ;
-	}	
+	}
 	pthread_mutex_lock(p->left_fork);
 	pthread_mutex_lock(p->mutex_data);
 	gettimeofday(&p->last_meal, NULL);
@@ -27,6 +39,7 @@ void	right_first(t_philo *p)
 	pthread_mutex_unlock(p->left_fork);
 	pthread_mutex_unlock(&p->right_fork);
 }
+
 void	left_first(t_philo *p)
 {
 	pthread_mutex_lock(p->left_fork);
@@ -69,7 +82,7 @@ void	sleeping(t_philo *p)
 
 void	thinking(t_philo *p)
 {
- 	pthread_mutex_lock(p->mutex_data);
+	pthread_mutex_lock(p->mutex_data);
 	if (!p->stop)
 		printf("%d %d is thinking\n", current_time(&p->start), p->philo_id);
 	pthread_mutex_unlock(p->mutex_data);

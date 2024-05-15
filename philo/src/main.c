@@ -1,11 +1,22 @@
-#include "../inc/philo.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahuge <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/15 18:29:10 by ahuge             #+#    #+#             */
+/*   Updated: 2024/05/15 18:29:12 by ahuge            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../inc/philo.h"
 
 int	main(int argc, char **argv)
 {
-	t_philo *philo;
-	t_monitoring monitoring;
-	int	number;
+	t_philo			*philo;
+	t_monitoring	monitoring;
+	int				number;
 
 	if (argc == 5 || argc == 6)
 	{

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitoring.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahuge <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/15 18:29:19 by ahuge             #+#    #+#             */
+/*   Updated: 2024/05/15 18:29:23 by ahuge            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 void	stop_all_philo(t_philo *p, int number)
@@ -20,7 +32,7 @@ int	all_philo_are_alive(t_philo *p, int number, int time_to_die)
 
 	i = 0;
 	pthread_mutex_lock(p->mutex_data);
-	while (i < number &&  current_time(&p[i].last_meal) < time_to_die)//(p[i].is_eating || current_time(&p[i].last_meal) < time_to_die))
+	while (i < number && current_time(&p[i].last_meal) < time_to_die)
 	{
 		pthread_mutex_unlock(p->mutex_data);
 		i++;
@@ -48,25 +60,27 @@ int	philo_still_need_to_eat(t_philo *p, int number, int must_eat_times)
 	pthread_mutex_unlock(p->mutex_data);
 	if (i == number)
 		return (0);
-	return(1);
+	return (1);
 }
 
-void    *check_for_dead(void *data)
+void	*check_for_dead(void *data)
 {
-	t_monitoring *m = (t_monitoring *)data;
+	t_monitoring	*m;
 
+	m = (t_monitoring *)data;
 	if (m->philo->must_eat_times != 0)
 	{
-		while (all_philo_are_alive(m->philo, m->number, m->time_to_die) 
-			&& (m->philo->must_eat_times == -1 
+		while (all_philo_are_alive(m->philo, m->number, m->time_to_die)
+			&& (m->philo->must_eat_times == -1
 			|| philo_still_need_to_eat(m->philo, m->number, m->philo->must_eat_times)))
 		{
 			usleep(5000);
 		}
 	}
 	stop_all_philo(m->philo, m->number);
-	return(NULL);
+	return (NULL);
 }
+
 int	moni(t_philo *p, t_monitoring *m, int number)
 {
 	m->philo = p;
