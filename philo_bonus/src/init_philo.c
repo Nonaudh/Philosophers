@@ -9,12 +9,12 @@ int	init_time(t_philo *p)
 	return (0);
 }
 
-void	init_struct_values(t_philo *p, t_monitoring *m, char **argv, sem_t *semaphore)
+void	init_struct_values(t_philo *p, t_monitoring *m, char **argv)
 {
 	int	i = 0;
 
-	//p->semaphore = semaphore;
 	p->philo_id = 1;
+	//m->philo = p;
 	m->time_to_die = ft_atol(argv[2]);
 	p->time_to_eat = ft_atol(argv[3]);
 	p->time_to_sleep = ft_atol(argv[4]);
@@ -26,11 +26,11 @@ void	init_struct_values(t_philo *p, t_monitoring *m, char **argv, sem_t *semapho
 		p->must_eat_times = -1;
 }
 
-int	init_philo(t_philo *p, t_monitoring *m, char **argv, sem_t *semaphore)
+int	init_philo(t_philo *p, t_monitoring *m, char **argv)
 {
 	if (init_time(p))
 		return (1);
-	init_struct_values(p, m, argv, semaphore);
+	init_struct_values(p, m, argv);
 
 	return (0);
 }

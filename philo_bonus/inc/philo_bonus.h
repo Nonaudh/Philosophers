@@ -10,6 +10,7 @@
 # include <unistd.h>
 # include <semaphore.h>
 # include <fcntl.h>
+# include <signal.h>
 
 # define INT_MAX 2147483647
 
@@ -46,11 +47,12 @@ int	check_if_only_digit(char **argv);
 int	check_if_values_exceeding(char **argv);
 int	check_if_value_is_between(long nb, int min, int max);
 
-int	init_philo(t_philo *p, t_monitoring *m, char **argv, sem_t *semaphore);
-void	init_struct_values(t_philo *p, t_monitoring *m, char **argv, sem_t *semaphore);
+int	init_philo(t_philo *p, t_monitoring *m, char **argv);
+void	init_struct_values(t_philo *p, t_monitoring *m, char **argv);
 int	init_time(t_philo *p);
 
-int philosophers_bonus(t_philo *p, t_monitoring *m, int number, sem_t *semaphore_1, sem_t *semaphore_2);
+int philosophers_bonus(t_philo *p, t_monitoring *m, int number);
+void    *monitoring(void *data);
 
 void	ft_putendl_fd(char *str, int fd);
 int	ft_strlen(char *str);
