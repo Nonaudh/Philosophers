@@ -22,7 +22,7 @@ typedef enum	e_bool
 
 typedef struct s_philo
 {
-	sem_t	*semaphore;
+	sem_t	*sem_data;
 	int philo_id;
 	int	time_to_eat;
 	int	time_to_sleep;
@@ -38,6 +38,8 @@ typedef struct s_monitoring
 	pthread_t thread_id;
 	t_philo *philo;
 	int	time_to_die;
+	char	sem_name[5];
+	sem_t	*sem_data;
 }	t_monitoring;
 
 int	main(int argc, char **argv);
@@ -53,6 +55,8 @@ int	init_time(t_philo *p);
 
 int philosophers_bonus(t_philo *p, t_monitoring *m, int number);
 void    *monitoring(void *data);
+
+int    routine_philo(t_philo *p, t_monitoring *m, sem_t *sem_forks[2]);
 
 void	ft_putendl_fd(char *str, int fd);
 int	ft_strlen(char *str);

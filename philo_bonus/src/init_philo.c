@@ -13,8 +13,7 @@ void	init_struct_values(t_philo *p, t_monitoring *m, char **argv)
 {
 	int	i = 0;
 
-	p->philo_id = 1;
-	//m->philo = p;
+	p->philo_id = 0;
 	m->time_to_die = ft_atol(argv[2]);
 	p->time_to_eat = ft_atol(argv[3]);
 	p->time_to_sleep = ft_atol(argv[4]);
