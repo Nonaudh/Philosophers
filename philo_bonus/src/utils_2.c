@@ -3,8 +3,8 @@
 void    info(void)
 {
 	ft_putendl_fd("Error\nInvalid arguments", 2);
-	ft_putendl_fd("./philo number_of_philosophers time_to_die time_to_eat time_to_sleep", 2);
-	ft_putendl_fd("[number_of_times_each_philosopher_must_eat]", 2);
+	ft_putstr_fd("./philo number_of_philosophers ", 2);
+	ft_putendl_fd("time_to_die time_to_eat time_to_sleep", 2);
 }
 
 int	ft_msleep(int milliseconds, t_bool *stop)

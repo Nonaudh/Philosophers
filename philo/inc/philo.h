@@ -81,6 +81,7 @@ int		philo_still_need_to_eat(t_philo *p, int number, int must_eat_times);
 int		all_philo_are_alive(t_philo *p, int number, int time_to_die);
 void	stop_all_philo(t_philo *p, int number);
 
+void	ft_putstr_fd(char *str, int fd);
 void	ft_putendl_fd(char *str, int fd);
 int		ft_strlen(char *str);
 long	ft_atol(const char *nptr);

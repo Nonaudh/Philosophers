@@ -9,9 +9,9 @@ int	main(int argc, char **argv)
 	if (argc == 5)
 	{
 		if (check_values(argv))
-			return (1);
+			return (0);
 		number = ft_atol(argv[1]);
-		if (init_philo(&philo, &monitoring, argv))
+		if (init_philo(&philo, &monitoring, argv, number))
 			return (1);
 		if (philosophers_bonus(&philo, &monitoring, number))
 			return (1);
