@@ -12,20 +12,6 @@
 
 #include "../inc/philo_bonus.h"
 
-int	number_of_semaphore_1(int number)
-{
-	if (number % 2 == 0)
-		return (number / 2);
-	return ((number + 1) / 2);
-}
-
-int	number_of_semaphore_2(int number)
-{
-	if (number % 2 == 0)
-		return (number / 2);
-	return ((number - 1) / 2);
-}
-
 int	init_struct_values(t_philo *p, t_monitoring *m, char **argv)
 {
 	if (gettimeofday(&p->start, NULL))
@@ -41,7 +27,7 @@ int	init_struct_values(t_philo *p, t_monitoring *m, char **argv)
 	return (0);
 }
 
-int	init_semaforks(t_philo *p, t_monitoring *m, int number)
+int	init_semaforks(t_philo *p, int number)
 {
 	int	nb_of_right_forks;
 	int	nb_of_left_forks;
@@ -51,17 +37,27 @@ int	init_semaforks(t_philo *p, t_monitoring *m, int number)
 	p->sem_t_right = sem_open("sem_right", O_CREAT, 0644, nb_of_right_forks);
 	if (!p->sem_t_right)
 		return (1);
-	p->sem_t_left = sem_open("sem_left", O_CREAT, 0644, nb_of_left_forks);
-	if (!p->sem_t_left)
+	if (sem_unlink("sem_right"))
 		return (1);
+	if (number != 1)
+	{
+		p->sem_t_left = sem_open("sem_left", O_CREAT, 0644, nb_of_left_forks);
+		if (!p->sem_t_left)
+			return (1);
+		if (sem_unlink("sem_left"))
+			return (1);
+	}
+	else
+		p->sem_t_left = NULL;
+	return (0);
+}
+
+int	init_sem_data(t_philo *p, t_monitoring *m)
+{
 	p->sem_t_data = sem_open("sem_data", O_CREAT, 0644, 1);
 	if (!p->sem_t_data)
 		return (1);
 	m->sem_t_data = p->sem_t_data;
-	if (sem_unlink("sem_right"))
-		return (1);
-	if (sem_unlink("sem_left"))
-		return (1);
 	if (sem_unlink("sem_data"))
 		return (1);
 	return (0);
@@ -71,7 +67,9 @@ int	init_philo(t_philo *p, t_monitoring *m, char **argv, int number)
 {
 	if (init_struct_values(p, m, argv))
 		return (1);
-	if (init_semaforks(p, m, number))
+	if (init_semaforks(p, number))
+		return (1);
+	if (init_sem_data(p, m))
 		return (1);
 	return (0);
 }

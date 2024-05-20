@@ -14,8 +14,9 @@ CC = cc
 
 CFLAGS = -g -pthread -Wall -Wextra -Werror
 
-SRC = 	src/main.c src/check_values.c src/init_philo.c src/philosophers.c \
-		src/routine_philo.c src/monitoring.c src/utils_1.c src/utils_2.c
+SRC = 	src/main_bonus.c src/check_values_bonus.c src/init_philo_bonus.c \
+		src/philosophers_bonus.c src/routine_philo_bonus.c src/monitoring_bonus.c \
+		src/utils_1_bonus.c src/utils_2_bonus.c
 
 OBJ = $(SRC:%.c=%.o)
 

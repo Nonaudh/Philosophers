@@ -12,6 +12,20 @@
 
 #include "../inc/philo_bonus.h"
 
+int	number_of_semaphore_1(int number)
+{
+	if (number % 2 == 0)
+		return (number / 2);
+	return ((number + 1) / 2);
+}
+
+int	number_of_semaphore_2(int number)
+{
+	if (number % 2 == 0)
+		return (number / 2);
+	return ((number - 1) / 2);
+}
+
 void	info(void)
 {
 	ft_putendl_fd("Error\nInvalid arguments", 2);

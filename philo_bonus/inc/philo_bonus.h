@@ -60,15 +60,15 @@ int		check_if_values_exceeding(char **argv);
 int		check_if_value_is_between(long nb, int min, int max);
 
 int		init_philo(t_philo *p, t_monitoring *m, char **argv, int number);
-int		init_semaforks(t_philo *p, t_monitoring *m, int number);
+int		init_semaforks(t_philo *p, int number);
 int		init_struct_values(t_philo *p, t_monitoring *m, char **argv);
-int		number_of_semaphore_2(int number);
-int		number_of_semaphore_1(int number);
+int		init_sem_data(t_philo *p, t_monitoring *m);
 
 int		philosophers_bonus(t_philo *p, t_monitoring *m, int number);
 void	close_semaphores(t_philo *p);
 void	kill_all_child_process(int *fork_pid, int number);
 void	*monitoring(void *data);
+void	wait_for_death(t_philo *p);
 
 int		routine_philo(t_philo *p, t_monitoring *m);
 void	thinking(t_philo *p);
@@ -84,5 +84,7 @@ int		is_digit(char c);
 int		time_since(struct timeval *start);
 int		ft_msleep(int milliseconds, t_bool *stop);
 void	info(void);
+int		number_of_semaphore_2(int number);
+int		number_of_semaphore_1(int number);
 
 #endif

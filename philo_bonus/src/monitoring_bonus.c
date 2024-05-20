@@ -12,6 +12,18 @@
 
 #include "../inc/philo_bonus.h"
 
+void	wait_for_death(t_philo *p)
+{
+	sem_wait(p->sem_t_data);
+	while (!p->stop)
+	{
+		sem_post(p->sem_t_data);
+		usleep(500);
+		sem_wait(p->sem_t_data);
+	}
+	sem_post(p->sem_t_data);
+}
+
 void	*monitoring(void *data)
 {
 	t_monitoring	*m;

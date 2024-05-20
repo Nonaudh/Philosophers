@@ -29,7 +29,7 @@ void	close_semaphores(t_philo *p)
 {
 	if (sem_close(p->sem_t_right))
 		ft_putendl_fd("Error sem_close 1", 2);
-	if (sem_close(p->sem_t_left))
+	if (p->sem_t_left && sem_close(p->sem_t_left))
 		ft_putendl_fd("Error sem_close 2", 2);
 	if (sem_close(p->sem_t_data))
 		ft_putendl_fd("Error sem_close 3", 2);

@@ -19,6 +19,11 @@ void	eating(t_philo *p)
 	if (!p->stop)
 		printf("%d %d has taken a fork\n", time_since(&p->start), p->philo_id);
 	sem_post(p->sem_t_data);
+	if (!p->sem_t_left)
+	{
+		wait_for_death(p);
+		return ;
+	}
 	sem_wait(p->sem_t_left);
 	sem_wait(p->sem_t_data);
 	if (!p->stop)
