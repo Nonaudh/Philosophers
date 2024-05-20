@@ -26,6 +26,8 @@ void	right_first(t_philo *p)
 	}
 	pthread_mutex_lock(p->left_fork);
 	pthread_mutex_lock(p->mutex_data);
+	if (!p->stop)
+		printf("%d %d has taken a fork\n", time_since(&p->start), p->philo_id);
 	gettimeofday(&p->last_meal, NULL);
 	if (!p->stop)
 		printf("%d %d is eating\n", time_since(&p->start), p->philo_id);
@@ -47,6 +49,8 @@ void	left_first(t_philo *p)
 	pthread_mutex_unlock(p->mutex_data);
 	pthread_mutex_lock(&p->right_fork);
 	pthread_mutex_lock(p->mutex_data);
+	if (!p->stop)
+		printf("%d %d has taken a fork\n", time_since(&p->start), p->philo_id);
 	gettimeofday(&p->last_meal, NULL);
 	if (!p->stop)
 		printf("%d %d is eating\n", time_since(&p->start), p->philo_id);

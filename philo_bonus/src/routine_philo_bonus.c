@@ -32,7 +32,7 @@ void	eating(t_philo *p)
 	if (!p->stop)
 		printf("%d %d is eating\n", time_since(&p->start), p->philo_id);
 	sem_post(p->sem_t_data);
-	ft_msleep(p->time_to_eat, &p->stop);
+	ft_msleep(p->time_to_eat, &p->stop, p->sem_t_data);
 	sem_post(p->sem_t_left);
 	sem_post(p->sem_t_right);
 }
@@ -43,7 +43,7 @@ void	sleeping(t_philo *p)
 	if (!p->stop)
 		printf("%d %d is sleeping\n", time_since(&p->start), p->philo_id);
 	sem_post(p->sem_t_data);
-	ft_msleep(p->time_to_sleep, &p->stop);
+	ft_msleep(p->time_to_sleep, &p->stop, p->sem_t_data);
 }
 
 void	thinking(t_philo *p)
@@ -54,18 +54,28 @@ void	thinking(t_philo *p)
 	sem_post(p->sem_t_data);
 }
 
+t_bool	safely_return_stop(t_philo *p)
+{
+	t_bool	stop;
+
+	sem_wait(p->sem_t_data);
+	stop = p->stop;
+	sem_post(p->sem_t_data);
+	return (stop);
+}
+
 int	routine_philo(t_philo *p, t_monitoring *m)
 {
 	pthread_t	thread_id;
 
 	pthread_create(&thread_id, NULL, monitoring, m);
-	while (!p->stop)
+	while (!safely_return_stop(p))
 	{
-		if (!p->stop)
+		if (!safely_return_stop(p))
 			eating(p);
-		if (!p->stop)
+		if (!safely_return_stop(p))
 			sleeping(p);
-		if (!p->stop)
+		if (!safely_return_stop(p))
 			thinking(p);
 	}
 	pthread_join(thread_id, NULL);

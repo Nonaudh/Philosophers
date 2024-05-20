@@ -33,14 +33,20 @@ void	info(void)
 	ft_putendl_fd("time_to_die time_to_eat time_to_sleep", 2);
 }
 
-int	ft_msleep(int milliseconds, t_bool *stop)
+int	ft_msleep(int milliseconds, t_bool *stop, sem_t *sem_t_data)
 {
 	struct timeval	start;
 
 	if (gettimeofday(&start, NULL))
 		ft_putendl_fd("Error gettimeoftheday", 2);
+	sem_wait(sem_t_data);
 	while (!(*stop) && time_since(&start) < milliseconds)
+	{
+		sem_post(sem_t_data);
 		usleep(500);
+		sem_wait(sem_t_data);
+	}
+	sem_post(sem_t_data);
 	return (0);
 }
 

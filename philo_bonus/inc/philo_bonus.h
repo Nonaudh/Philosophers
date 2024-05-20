@@ -71,6 +71,7 @@ void	*monitoring(void *data);
 void	wait_for_death(t_philo *p);
 
 int		routine_philo(t_philo *p, t_monitoring *m);
+t_bool	safely_return_stop(t_philo *p);
 void	thinking(t_philo *p);
 void	sleeping(t_philo *p);
 void	eating(t_philo *p);
@@ -82,7 +83,7 @@ long	ft_atol(const char *nptr);
 int		is_digit(char c);
 
 int		time_since(struct timeval *start);
-int		ft_msleep(int milliseconds, t_bool *stop);
+int		ft_msleep(int milliseconds, t_bool *stop, sem_t *sem_t_data);
 void	info(void);
 int		number_of_semaphore_2(int number);
 int		number_of_semaphore_1(int number);
