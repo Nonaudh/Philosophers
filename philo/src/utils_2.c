@@ -58,7 +58,7 @@ int	ft_msleep(int milliseconds, t_bool *stop, pthread_mutex_t *mutex)
 	if (gettimeofday(&start, NULL))
 		ft_putendl_fd("Error gettimeoftheday", 2);
 	pthread_mutex_lock(mutex);
-	while (!(*stop) && current_time(&start) < milliseconds)
+	while (!(*stop) && time_since(&start) < milliseconds)
 	{
 		pthread_mutex_unlock(mutex);
 		usleep(500);
@@ -68,10 +68,12 @@ int	ft_msleep(int milliseconds, t_bool *stop, pthread_mutex_t *mutex)
 	return (0);
 }
 
-int	current_time(struct timeval *start)
+int	time_since(struct timeval *start)
 {
 	struct timeval	end;
 
+	if (!start)
+		return (0);
 	if (gettimeofday(&end, NULL))
 		ft_putendl_fd("Error gettimeoftheday", 2);
 	return (1e3 * (end.tv_sec - start->tv_sec)

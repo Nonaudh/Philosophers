@@ -36,7 +36,6 @@ typedef struct s_philo
 	int				must_eat_times;
 	int				number_of_meal;
 	t_bool			stop;
-	t_bool			is_eating;
 	struct timeval	start;
 	struct timeval	last_meal;
 	pthread_mutex_t	right_fork;
@@ -75,9 +74,9 @@ void	eating(t_philo *p);
 void	left_first(t_philo *p);
 void	right_first(t_philo *p);
 
-int		moni(t_philo *p, t_monitoring *m, int number);
+int		monitoring_philo(t_philo *p, t_monitoring *m, int number);
 void	*check_for_dead(void *data);
-int		philo_still_need_to_eat(t_philo *p, int number, int must_eat_times);
+int		philo_still_need_to_eat(t_philo *p, int number);
 int		all_philo_are_alive(t_philo *p, int number, int time_to_die);
 void	stop_all_philo(t_philo *p, int number);
 
@@ -87,7 +86,7 @@ int		ft_strlen(char *str);
 long	ft_atol(const char *nptr);
 int		is_digit(char c);
 
-int		current_time(struct timeval *start);
+int		time_since(struct timeval *start);
 void	destroy_all_mutex(t_philo *p, int number);
 int		ft_msleep(int milliseconds, t_bool *stop, pthread_mutex_t *mutex);
 void	wait_for_all_threads(t_philo *p, t_monitoring *m, int number);

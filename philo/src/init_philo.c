@@ -49,7 +49,6 @@ void	init_struct_values(t_philo *p, t_monitoring *m, char **argv, int number)
 		p[i].time_to_sleep = time_sleeping;
 		p[i].must_eat_times = must_eat_times;
 		p[i].number_of_meal = 0;
-		p[i].is_eating = false;
 		p[i].stop = false;
 		p[i].philo_id = i + 1;
 		i++;

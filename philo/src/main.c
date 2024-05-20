@@ -30,7 +30,7 @@ int	main(int argc, char **argv)
 			return (1);
 		if (philosophers(philo, number))
 			return (1);
-		if (moni(philo, &monitoring, number))
+		if (monitoring_philo(philo, &monitoring, number))
 			return (1);
 		wait_for_all_threads(philo, &monitoring, number);
 		destroy_all_mutex(philo, number);

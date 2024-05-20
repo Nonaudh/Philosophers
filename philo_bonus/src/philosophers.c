@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahuge <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 12:28:32 by ahuge             #+#    #+#             */
+/*   Updated: 2024/05/20 12:28:34 by ahuge            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo_bonus.h"
 
 void	kill_all_child_process(int *fork_pid, int number)
@@ -12,7 +24,7 @@ void	kill_all_child_process(int *fork_pid, int number)
 		i++;
 	}
 }
-	
+
 void	close_semaphores(t_philo *p)
 {
 	if (sem_close(p->sem_t_right))
@@ -23,11 +35,11 @@ void	close_semaphores(t_philo *p)
 		ft_putendl_fd("Error sem_close 3", 2);
 }
 
-int philosophers_bonus(t_philo *p, t_monitoring *m, int number)
+int	philosophers_bonus(t_philo *p, t_monitoring *m, int number)
 {
-	int pid;
-	int *fork_pid;
-	
+	int	pid;
+	int	*fork_pid;
+
 	pid = 1;
 	fork_pid = malloc(sizeof(int) * number);
 	if (!fork_pid)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_philo.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahuge <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 12:28:12 by ahuge             #+#    #+#             */
+/*   Updated: 2024/05/20 12:28:14 by ahuge            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo_bonus.h"
 
 int	number_of_semaphore_1(int number)
@@ -16,8 +28,6 @@ int	number_of_semaphore_2(int number)
 
 int	init_struct_values(t_philo *p, t_monitoring *m, char **argv)
 {
-	int	i = 0;
-
 	if (gettimeofday(&p->start, NULL))
 		return (1);
 	if (gettimeofday(&p->last_meal, NULL))
@@ -30,17 +40,18 @@ int	init_struct_values(t_philo *p, t_monitoring *m, char **argv)
 	m->philo = p;
 	return (0);
 }
+
 int	init_semaforks(t_philo *p, t_monitoring *m, int number)
 {
-	int number_of_right_forks;
-	int number_of_left_forks;
+	int	nb_of_right_forks;
+	int	nb_of_left_forks;
 
-	number_of_right_forks = number_of_semaphore_1(number);
-	number_of_left_forks = number_of_semaphore_2(number);
-	p->sem_t_right = sem_open("sem_right", O_CREAT, 0644, number_of_right_forks);
+	nb_of_right_forks = number_of_semaphore_1(number);
+	nb_of_left_forks = number_of_semaphore_2(number);
+	p->sem_t_right = sem_open("sem_right", O_CREAT, 0644, nb_of_right_forks);
 	if (!p->sem_t_right)
 		return (1);
-	p->sem_t_left = sem_open("sem_left", O_CREAT, 0644, number_of_left_forks);
+	p->sem_t_left = sem_open("sem_left", O_CREAT, 0644, nb_of_left_forks);
 	if (!p->sem_t_left)
 		return (1);
 	p->sem_t_data = sem_open("sem_data", O_CREAT, 0644, 1);

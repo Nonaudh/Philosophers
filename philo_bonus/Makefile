@@ -1,6 +1,18 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ahuge <marvin@42.fr>                       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/05/20 12:29:17 by ahuge             #+#    #+#              #
+#    Updated: 2024/05/20 12:29:22 by ahuge            ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 CC = cc
 
-CFLAGS = -g -pthread #-Wall -Wextra -Werror #-fsanitize=thread 
+CFLAGS = -g -pthread -Wall -Wextra -Werror
 
 SRC = 	src/main.c src/check_values.c src/init_philo.c src/philosophers.c \
 		src/routine_philo.c src/monitoring.c src/utils_1.c src/utils_2.c

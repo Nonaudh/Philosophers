@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_values.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahuge <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 12:28:06 by ahuge             #+#    #+#             */
+/*   Updated: 2024/05/20 12:28:07 by ahuge            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo_bonus.h"
 
 int	check_if_value_is_between(long nb, int min, int max)
@@ -14,12 +26,13 @@ int	check_if_values_exceeding(char **argv)
 	i = 1;
 	while (argv[i])
 	{
- 		if (i == 1 && check_if_value_is_between(ft_atol(argv[i]), 1, 10000))
-			break;	
-		else if (i != 5 && check_if_value_is_between(ft_atol(argv[i]), 1, INT_MAX))
-			break;
+		if (i == 1 && check_if_value_is_between(ft_atol(argv[i]), 1, 10000))
+			break ;
+		else if (i != 5
+			&& check_if_value_is_between(ft_atol(argv[i]), 1, INT_MAX))
+			break ;
 		else if (check_if_value_is_between(ft_atol(argv[i]), 0, INT_MAX))
-			break;
+			break ;
 		i++;
 	}
 	if (argv[i])
@@ -33,7 +46,7 @@ int	check_if_values_exceeding(char **argv)
 int	check_if_only_digit(char **argv)
 {
 	int	i;
-	int y;
+	int	y;
 
 	i = 1;
 	while (argv[i])
@@ -45,7 +58,7 @@ int	check_if_only_digit(char **argv)
 			{
 				ft_putendl_fd("Error\nOnly digits are allowed", 2);
 				return (1);
-			}	
+			}
 			y++;
 		}
 		i++;
@@ -59,5 +72,5 @@ int	check_values(char **argv)
 		return (1);
 	if (check_if_values_exceeding(argv))
 		return (1);
-	return(0);
+	return (0);
 }

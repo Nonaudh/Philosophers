@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine_philo.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahuge <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 12:28:41 by ahuge             #+#    #+#             */
+/*   Updated: 2024/05/20 12:28:42 by ahuge            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo_bonus.h"
 
 void	eating(t_philo *p)
@@ -5,15 +17,15 @@ void	eating(t_philo *p)
 	sem_wait(p->sem_t_right);
 	sem_wait(p->sem_t_data);
 	if (!p->stop)
-		printf("%d %d has taken a fork\n", current_time(&p->start), p->philo_id);
+		printf("%d %d has taken a fork\n", time_since(&p->start), p->philo_id);
 	sem_post(p->sem_t_data);
 	sem_wait(p->sem_t_left);
 	sem_wait(p->sem_t_data);
 	if (!p->stop)
-		printf("%d %d has taken a fork\n", current_time(&p->start), p->philo_id);
+		printf("%d %d has taken a fork\n", time_since(&p->start), p->philo_id);
 	gettimeofday(&p->last_meal, NULL);
 	if (!p->stop)
-		printf("%d %d is eating\n", current_time(&p->start), p->philo_id);
+		printf("%d %d is eating\n", time_since(&p->start), p->philo_id);
 	sem_post(p->sem_t_data);
 	ft_msleep(p->time_to_eat, &p->stop);
 	sem_post(p->sem_t_left);
@@ -24,7 +36,7 @@ void	sleeping(t_philo *p)
 {
 	sem_wait(p->sem_t_data);
 	if (!p->stop)
-		printf("%d %d is sleeping\n", current_time(&p->start), p->philo_id);
+		printf("%d %d is sleeping\n", time_since(&p->start), p->philo_id);
 	sem_post(p->sem_t_data);
 	ft_msleep(p->time_to_sleep, &p->stop);
 }
@@ -33,14 +45,13 @@ void	thinking(t_philo *p)
 {
 	sem_wait(p->sem_t_data);
 	if (!p->stop)
-		printf("%d %d is thinking\n", current_time(&p->start), p->philo_id);
+		printf("%d %d is thinking\n", time_since(&p->start), p->philo_id);
 	sem_post(p->sem_t_data);
 }
 
-int    routine_philo(t_philo *p, t_monitoring *m)
+int	routine_philo(t_philo *p, t_monitoring *m)
 {
-	int i = 0;
-	pthread_t thread_id;
+	pthread_t	thread_id;
 
 	pthread_create(&thread_id, NULL, monitoring, m);
 	while (!p->stop)
